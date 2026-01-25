@@ -1,0 +1,86 @@
+@use "@/shared/styles/variables" as *;
+@use "@/shared/styles/mixins" as *;
+
+.item {
+    padding: $base-size-24 0;
+    border-bottom: 1px solid $gh-border-muted;
+    cursor: pointer;
+
+    &:hover {
+        .itemTitle {
+            text-decoration: underline;
+        }
+    }
+
+    @include respond-to(md) {
+        padding: $base-size-16 0;
+    }
+}
+
+.itemMain {
+    display: flex;
+    flex-direction: column;
+    gap: $base-size-4;
+}
+
+.itemTitleRow {
+    display: flex;
+    align-items: center;
+    gap: $base-size-8;
+}
+
+.repoIcon {
+    color: $gh-fg-muted;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.itemTitle {
+    font-size: 1.25rem;
+    font-weight: $font-weight-semibold;
+    color: $gh-fg-accent;
+    margin: 0;
+    line-height: 1.25;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+
+    @include respond-to(md) {
+        font-size: 1.125rem;
+    }
+}
+
+.sharedBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    color: $gh-fg-muted;
+    border: 1px solid $gh-border-default;
+    padding: 2px 7px;
+    border-radius: 20px;
+    font-weight: $font-weight-medium;
+}
+
+.badgeText {
+    @include respond-to(md) {
+        display: none;
+    }
+}
+
+.itemMeta {
+    display: flex;
+    align-items: center;
+    gap: $base-size-16;
+    margin-top: $base-size-4;
+}
+
+.date {
+    font-size: 0.75rem;
+    color: $gh-fg-muted;
+}

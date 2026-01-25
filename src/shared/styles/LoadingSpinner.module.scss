@@ -1,0 +1,6 @@
+@use "./variables" as *;
+@use "./mixins" as *;
+
+.spinner {
+    @include loading-spinner(1rem, $gh-fg-muted);
+}

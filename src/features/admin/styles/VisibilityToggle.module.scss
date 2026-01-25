@@ -1,0 +1,32 @@
+@use "@/shared/styles/variables" as *;
+@use "@/shared/styles/mixins" as *;
+
+.visibilityToggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.875rem;
+    color: $gh-fg-muted;
+    border: 1px solid $gh-border-default;
+    padding: 4px 11px;
+    border-radius: 20px;
+    font-weight: $font-weight-medium;
+    background: transparent;
+    cursor: pointer;
+    transition: all $transition-base;
+
+    &:hover {
+        border-color: $gh-border-muted;
+        color: $gh-fg-default;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    @include respond-to(md) {
+        font-size: 0.75rem;
+        padding: 3px 7px;
+    }
+}

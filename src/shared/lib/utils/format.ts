@@ -1,0 +1,27 @@
+export function formatDate(date: Date | string): string {
+    const d = typeof date === "string" ? new Date(date) : date;
+
+    if (isNaN(d.getTime())) {
+        return "";
+    }
+
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    const hours = String(d.getHours()).padStart(2, "0");
+    const minutes = String(d.getMinutes()).padStart(2, "0");
+
+    return `${year}.${month}.${day} ${hours}:${minutes}`;
+}
+
+export function parseEmails(input: string): string[] {
+    return input
+        .split(/[\n,]+/)
+        .map((email) => email.trim())
+        .filter((email) => email.length > 0);
+}
+
+export function validateEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}

@@ -1,0 +1,30 @@
+@use "@/shared/styles/variables" as *;
+@use "@/shared/styles/mixins" as *;
+
+.headerLink {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: $gh-border-muted;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all $transition-base;
+    border-radius: 4px;
+    padding: 0.25rem;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+
+    &:hover {
+        color: $gh-fg-muted;
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
+
+    @include respond-to(md) {
+        font-size: 0.9rem;
+    }
+}

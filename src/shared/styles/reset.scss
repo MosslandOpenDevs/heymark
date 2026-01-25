@@ -1,0 +1,29 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: vh(100);
+}
+
+body {
+    font-family: $font-family-sans;
+    font-size: 16px;
+    font-weight: $font-weight-normal;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    color: $gh-fg-default;
+    background-color: $gh-bg-default;
+    overflow-x: hidden;
+    word-wrap: break-word;
+}

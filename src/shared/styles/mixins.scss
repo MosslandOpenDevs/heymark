@@ -1,0 +1,105 @@
+@use "variables" as *;
+
+@function vh($value) {
+    @return calc(#{$vh-base} * #{$value});
+}
+
+@mixin respond-to($breakpoint) {
+    @if $breakpoint == sm {
+        @media (max-width: $breakpoint-sm) {
+            @content;
+        }
+    } @else if $breakpoint == md {
+        @media (max-width: $breakpoint-md) {
+            @content;
+        }
+    } @else if $breakpoint == lg {
+        @media (max-width: $breakpoint-lg) {
+            @content;
+        }
+    }
+}
+
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@mixin loading-spinner($size: 10px, $color: $gh-fg-muted) {
+    @include flex-center;
+    width: 100%;
+    min-height: 200px;
+    gap: 10px;
+
+    &::before,
+    &::after {
+        content: "";
+        width: $size;
+        height: $size;
+        border-radius: 50%;
+        background-color: $color;
+        animation: loading-fade 1.4s ease-in-out infinite;
+    }
+
+    &::before {
+        animation-delay: -0.32s;
+    }
+
+    span {
+        width: $size;
+        height: $size;
+        border-radius: 50%;
+        background-color: $color;
+        animation: loading-fade 1.4s ease-in-out infinite;
+        animation-delay: -0.16s;
+    }
+
+    &::after {
+        animation-delay: 0s;
+    }
+
+    @keyframes loading-fade {
+        0%,
+        80%,
+        100% {
+            opacity: 0.3;
+            transform: scale(0.8);
+        }
+        40% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+}
+
+@mixin text-button {
+    display: inline-flex;
+    align-items: center;
+    gap: $base-size-4;
+    background: $gh-bg-muted;
+    border: 1px solid $gh-border-default;
+    color: $gh-fg-default;
+    font-size: 0.875rem;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: all $transition-base;
+    border-radius: 6px;
+    padding: 6px 12px;
+
+    &:hover {
+        background: $gh-bg-neutral-muted;
+        border-color: $gh-border-muted;
+    }
+
+    @include respond-to(md) {
+        font-size: 0.75rem;
+        padding: 4px 10px;
+    }
+}

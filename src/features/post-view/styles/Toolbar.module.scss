@@ -1,0 +1,64 @@
+@use "@/shared/styles/variables" as *;
+@use "@/shared/styles/mixins" as *;
+
+.toolbar {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: $gh-bg-default;
+    z-index: 1000;
+    border-bottom: 1px solid $gh-border-default;
+    height: 64px;
+    margin-bottom: 3rem;
+
+    @include respond-to(md) {
+        height: 56px;
+        margin-bottom: 2rem;
+    }
+}
+
+.toolbarActions {
+    display: flex;
+    align-items: center;
+    gap: $base-size-16;
+}
+
+.settingsButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: $gh-bg-muted;
+    border: 1px solid $gh-border-default;
+    color: $gh-fg-default;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all $transition-base;
+    border-radius: 6px;
+    padding: 6px;
+
+    &:hover {
+        background: $gh-bg-neutral-muted;
+        border-color: $gh-border-muted;
+    }
+}
+
+.shareButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: $gh-bg-muted;
+    border: 1px solid $gh-border-default;
+    color: $gh-fg-default;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all $transition-base;
+    border-radius: 6px;
+    padding: 6px;
+
+    &:hover {
+        background: $gh-bg-neutral-muted;
+        border-color: $gh-border-muted;
+    }
+}

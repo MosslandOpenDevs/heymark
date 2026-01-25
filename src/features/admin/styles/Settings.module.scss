@@ -1,0 +1,55 @@
+@use "@/shared/styles/variables" as *;
+@use "@/shared/styles/mixins" as *;
+
+.settingPage {
+    min-height: vh(100);
+}
+
+.container {
+    max-width: $container-max-width;
+    margin: 0 auto;
+    padding: $base-size-16 $base-size-16 4rem;
+
+    @include respond-to(md) {
+        padding: $base-size-16 $base-size-16 2rem;
+    }
+}
+
+.header {
+    margin-bottom: 2rem;
+}
+
+.backButton {
+    margin-bottom: $base-size-24;
+}
+
+.content {
+    margin-bottom: 2rem;
+}
+
+.section {
+    margin-bottom: 0;
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $base-size-16;
+}
+
+.sectionTitle {
+    font-size: 1.125rem;
+    font-weight: $font-weight-semibold;
+    color: $gh-fg-default;
+    margin: 0;
+}
+
+.footer {
+    display: flex;
+    justify-content: flex-start;
+    gap: $base-size-16;
+    margin-top: 3rem;
+    padding-top: $base-size-24;
+    border-top: 1px solid $gh-border-default;
+}

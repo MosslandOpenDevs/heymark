@@ -1,0 +1,89 @@
+// GitHub 스타일 변수 (github-markdown-light.css 기반)
+
+// 기본 크기
+$base-size-4: 0.25rem;
+$base-size-8: 0.5rem;
+$base-size-16: 1rem;
+$base-size-24: 1.5rem;
+$base-size-40: 2.5rem;
+
+// GitHub 컬러 - Light 모드
+$gh-fg-default: #1f2328;
+$gh-fg-muted: #59636e;
+$gh-fg-accent: #0969da;
+$gh-fg-success: #1a7f37;
+$gh-fg-attention: #9a6700;
+$gh-fg-danger: #d1242f;
+$gh-fg-done: #8250df;
+
+$gh-bg-default: #ffffff;
+$gh-bg-muted: #f6f8fa;
+$gh-bg-neutral-muted: rgba(129, 139, 152, 0.12);
+$gh-bg-attention-muted: #fff8c5;
+
+$gh-border-default: #d1d9e0;
+$gh-border-muted: rgba(209, 217, 224, 0.7);
+$gh-border-neutral-muted: rgba(209, 217, 224, 0.7);
+$gh-border-accent: #0969da;
+$gh-border-success: #1a7f37;
+$gh-border-attention: #9a6700;
+$gh-border-danger: #cf222e;
+$gh-border-done: #8250df;
+
+// Syntax Highlighting 색상
+$gh-syntax-comment: #59636e;
+$gh-syntax-constant: #0550ae;
+$gh-syntax-entity: #6639ba;
+$gh-syntax-keyword: #cf222e;
+$gh-syntax-string: #0a3069;
+$gh-syntax-variable: #953800;
+$gh-syntax-invalid-illegal-bg: #82071e;
+$gh-syntax-invalid-deprecated-bg: #cf222e;
+$gh-syntax-diff-deleted: #82071e;
+$gh-syntax-diff-deleted-bg: #ffebe9;
+$gh-syntax-diff-inserted: #116329;
+$gh-syntax-diff-inserted-bg: #dafbe1;
+$gh-syntax-diff-changed: #953800;
+$gh-syntax-diff-changed-bg: #ffd8b5;
+$gh-syntax-diff-header-bg: #0550ae;
+$gh-syntax-meta: #8250df;
+$gh-syntax-markup: #3b2300;
+
+// 기타 색상
+$gh-canvas-subtle: #f6f8fa;
+$gh-neutral-emphasis: #818b98;
+
+// 폰트
+$font-family-sans:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji";
+$font-family-mono:
+    ui-monospace,
+    SFMono-Regular,
+    SF Mono,
+    Menlo,
+    Consolas,
+    Liberation Mono,
+    monospace;
+
+// 폰트 웨이트
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+
+// 기본 스타일
+$container-max-width: 1012px;
+
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+
+$transition-fast: 150ms;
+$transition-base: 300ms;
+
+$radius-sm: 0.125rem;
+$radius-md: 6px;
+$radius-lg: 0.5rem;
+$radius-full: 9999px;
+
+$vh-base: var(--vh, 1vh);

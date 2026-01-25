@@ -1,0 +1,127 @@
+@use "@/shared/styles/variables" as *;
+@use "@/shared/styles/mixins" as *;
+
+.tocContainer {
+    position: relative;
+    @include flex-center;
+}
+
+.tocButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: $gh-fg-default;
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: all $transition-base;
+    border-radius: 4px;
+    padding: 0;
+
+    &:hover {
+        color: $gh-fg-default;
+        background: $gh-bg-neutral-muted;
+    }
+
+    @include respond-to(md) {
+        font-size: 1.45rem;
+    }
+}
+
+.tocTooltip {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: white;
+    border: 1px solid $gh-border-default;
+    border-radius: $radius-lg;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    min-width: 280px;
+    max-width: 400px;
+    max-height: 70vh;
+    overflow-y: auto;
+    z-index: 1000;
+    animation: fadeIn $transition-fast ease-out;
+
+    @include respond-to(md) {
+        min-width: 240px;
+        max-width: calc(100vw - 32px);
+        right: -8px;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tocHeader {
+    padding: $base-size-16 $base-size-24;
+    font-weight: $font-weight-semibold;
+    font-size: 0.875rem;
+    color: $gh-fg-default;
+    border-bottom: 1px solid $gh-border-default;
+}
+
+.tocList {
+    list-style: none;
+    padding: $base-size-8 0;
+    margin: 0;
+}
+
+.tocItem {
+    margin: 0;
+
+    &.level2 {
+        padding-left: $base-size-16;
+    }
+
+    &.level3 {
+        padding-left: 2rem;
+    }
+}
+
+.tocLink {
+    display: block;
+    width: 100%;
+    padding: $base-size-8 $base-size-24;
+    text-align: left;
+    background: transparent;
+    border: none;
+    color: $gh-fg-default;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all $transition-fast;
+    border-left: 2px solid transparent;
+
+    &:hover {
+        background: $gh-bg-muted;
+        color: $gh-fg-default;
+        border-left-color: $gh-fg-accent;
+    }
+
+    .level2 & {
+        font-weight: $font-weight-medium;
+    }
+
+    .level3 & {
+        font-weight: $font-weight-normal;
+        font-size: 0.75rem;
+    }
+
+    @include respond-to(md) {
+        font-size: 0.75rem;
+        padding: $base-size-4 $base-size-16;
+
+        .level3 & {
+            font-size: 0.7rem;
+        }
+    }
+}

@@ -1,0 +1,6 @@
+@use "./variables" as *;
+@use "./mixins" as *;
+
+.text {
+    @include text-button;
+}

@@ -1,0 +1,265 @@
+@use "sass:color";
+@use "@/shared/styles/variables" as *;
+@use "@/shared/styles/mixins" as *;
+
+.emailList {
+    display: flex;
+    flex-direction: column;
+    gap: $base-size-4;
+    margin-bottom: $base-size-16;
+    transition: opacity $transition-base;
+
+    &.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+}
+
+.emailItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $base-size-8 $base-size-16;
+    background: $gh-bg-muted;
+    border-radius: $radius-md;
+    transition: all $transition-base;
+
+    &:hover {
+        background: $gh-bg-neutral-muted;
+    }
+}
+
+.emailAddress {
+    font-size: 1rem;
+    color: $gh-fg-default;
+}
+
+.removeButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: $gh-fg-muted;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all $transition-base;
+    padding: 4px;
+    border-radius: $radius-sm;
+    opacity: 0.6;
+
+    &:hover {
+        color: $gh-fg-default;
+        opacity: 1;
+    }
+
+    &:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+}
+
+.addButton {
+    display: inline-flex;
+    align-items: center;
+    gap: $base-size-4;
+    background: transparent;
+    border: none;
+    color: $gh-fg-accent;
+    font-size: 1rem;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: all $transition-base;
+    padding: $base-size-4 0;
+    margin-top: $base-size-8;
+
+    &:hover {
+        color: color.adjust($gh-fg-accent, $lightness: -10%);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+.emptyMessage {
+    color: $gh-fg-muted;
+    font-size: 0.875rem;
+    padding: $base-size-16;
+    text-align: center;
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: $base-size-16;
+
+    @include respond-to(md) {
+        padding: $base-size-8;
+    }
+}
+
+.addEmailsModal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border: 1px solid $gh-border-default;
+    border-radius: $radius-lg;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    z-index: 2000;
+    animation: fadeIn $transition-fast ease-out;
+
+    @include respond-to(md) {
+        width: 85%;
+        max-width: none;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -48%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.addEmailsModal .modalHeader {
+    padding: $base-size-16 $base-size-24;
+    font-weight: $font-weight-semibold;
+    font-size: 0.875rem;
+    color: $gh-fg-default;
+    border-bottom: 1px solid $gh-border-default;
+}
+
+.addEmailsModal .modalContent {
+    padding: $base-size-8 0;
+}
+
+.modalSection {
+    margin-bottom: $base-size-24;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.modalSectionTitle {
+    padding: 0 $base-size-24;
+    font-size: 0.875rem;
+    font-weight: $font-weight-semibold;
+    color: $gh-fg-default;
+    margin-bottom: $base-size-8;
+}
+
+.modalList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.modalItem {
+    display: flex;
+    align-items: center;
+    gap: $base-size-8;
+    padding: $base-size-8 $base-size-24;
+    cursor: pointer;
+    transition: all $transition-fast;
+    border-left: 2px solid transparent;
+
+    &:hover {
+        background: $gh-bg-muted;
+        border-left-color: $gh-fg-accent;
+    }
+
+    input[type="checkbox"] {
+        cursor: pointer;
+    }
+
+    span {
+        font-size: 0.875rem;
+        color: $gh-fg-default;
+    }
+}
+
+.emailInput {
+    width: calc(100% - #{2rem * 2});
+    padding: $base-size-8 $base-size-24;
+    border: 1px solid $gh-border-default;
+    border-radius: $radius-md;
+    font-size: 0.875rem;
+    font-family: $font-family-sans;
+    resize: vertical;
+    min-height: 80px;
+    margin: 0 $base-size-24;
+
+    &:focus {
+        outline: none;
+        border-color: $gh-fg-accent;
+        box-shadow: 0 0 0 3px rgba($gh-fg-accent, 0.1);
+    }
+}
+
+.addEmailsModal .modalActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: $base-size-8;
+    padding: $base-size-16 $base-size-24;
+    border-top: 1px solid $gh-border-default;
+}
+
+.modalCancelButton {
+    display: inline-flex;
+    align-items: center;
+    background: white;
+    border: 1px solid $gh-border-default;
+    color: $gh-fg-default;
+    font-size: 0.875rem;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: all $transition-base;
+    border-radius: $radius-md;
+    padding: $base-size-4 $base-size-16;
+
+    &:hover {
+        background: $gh-bg-muted;
+        border-color: $gh-border-muted;
+    }
+}
+
+.modalAddButton {
+    display: inline-flex;
+    align-items: center;
+    background: $gh-fg-accent;
+    border: none;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: all $transition-base;
+    border-radius: $radius-md;
+    padding: $base-size-4 $base-size-16;
+
+    &:hover {
+        background: color.adjust($gh-fg-accent, $lightness: -10%);
+    }
+}
