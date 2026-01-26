@@ -5,7 +5,6 @@ import { usePost } from "../lib/use-post";
 import { extractTableOfContents } from "../lib/use-toc";
 import { LoadingSpinner } from "@/shared/ui";
 import { Toolbar } from "./Toolbar";
-import { TableOfContents } from "./TableOfContents";
 import { Renderer } from "./Renderer";
 import styles from "../styles/Container.module.scss";
 
@@ -37,10 +36,7 @@ export function Container({ slug, isAdmin }: ContainerProps) {
     return (
         <div className={styles.viewPage}>
             <div className={styles.container}>
-                <Toolbar isAdmin={isAdmin} slug={slug} />
-                <div className={styles.toolbarActionsInline}>
-                    {tocItems.length > 0 && <TableOfContents items={tocItems} />}
-                </div>
+                <Toolbar isAdmin={isAdmin} slug={slug} tocItems={tocItems} />
                 <div className={styles.content}>
                     <Renderer file={post} />
                 </div>

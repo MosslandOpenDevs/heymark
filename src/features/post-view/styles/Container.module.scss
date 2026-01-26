@@ -13,16 +13,6 @@
     }
 }
 
-.toolbarActionsInline {
-    display: none;
-
-    @include respond-to(md) {
-        display: flex;
-        justify-content: flex-end;
-        margin-bottom: $base-size-16;
-    }
-}
-
 .content {
     margin: 0 auto;
 }
