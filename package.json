@@ -1,5 +1,5 @@
 {
-    "name": "@i2na/rule-book",
+    "name": "rule-book",
     "version": "1.0.0",
     "description": "Centralized AI coding tool conventions with auto-conversion to multiple formats",
     "main": "scripts/sync.js",
