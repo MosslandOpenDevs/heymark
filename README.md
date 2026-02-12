@@ -26,8 +26,8 @@ AI 코딩 도구(Cursor, Claude Code, GitHub Copilot 등)의 컨벤션을 중앙
 ```
 rule-book/
 ├── rules/                   # 컨벤션 원본 (Single Source of Truth)
-│   ├── coding-conventions.md
-│   └── tech-researcher.md
+│   ├── rule01.md
+│   └── rule02.md
 ├── scripts/
 │   ├── sync.js              # 메인 실행 스크립트
 │   ├── lib/
@@ -90,14 +90,14 @@ YAML frontmatter에 메타데이터를 정의하면 도구별 변환 시 활용�
 
 ```markdown
 ---
-description: "TypeScript & React coding standards"
+description: "AI assistant behavior guidelines"
 globs: "**/*.ts,**/*.tsx"
 alwaysApply: true
 ---
 
 # Rule Title
 
-본문 내용...
+Rule content...
 ```
 
 ### Frontmatter Fields
