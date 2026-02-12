@@ -1,0 +1,20 @@
+{
+    "name": "rule-book",
+    "version": "1.0.0",
+    "description": "Central convention management for AI coding tools (Cursor, Claude, Copilot, Codex)",
+    "scripts": {
+        "sync": "node scripts/sync.js",
+        "sync:clean": "node scripts/sync.js --clean",
+        "sync:preview": "node scripts/sync.js --dry-run"
+    },
+    "keywords": [
+        "ai",
+        "conventions",
+        "cursor",
+        "claude",
+        "copilot",
+        "codex",
+        "coding-standards"
+    ],
+    "license": "MIT"
+}
