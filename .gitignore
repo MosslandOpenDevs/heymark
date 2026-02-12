@@ -1,4 +1,4 @@
-.cursor/rules/
-.claude/skills/
-.github/instructions/
+.cursor
+.claude
+.github
 AGENTS.md
