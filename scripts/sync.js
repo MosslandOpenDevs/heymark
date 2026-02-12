@@ -90,11 +90,14 @@ Options:
 Available tools:
 ${toolLines}
 
+Note:
+  By default, the sync process automatically cleans existing files
+  before generating new ones to ensure a fresh sync.
+
 Examples:
-  node scripts/sync.js                       # Generate all tools
-  node scripts/sync.js -t cursor,claude      # Generate Cursor + Claude only
-  node scripts/sync.js -c                    # Clean all generated files
-  node scripts/sync.js -c && node scripts/sync.js -t cursor  # Clean then generate Cursor
+  node scripts/sync.js                       # Clean & generate all tools
+  node scripts/sync.js -t cursor,claude      # Clean & generate Cursor + Claude only
+  node scripts/sync.js -c                    # Clean all generated files only
   node scripts/sync.js -p                    # Preview (no write)
 `);
 }
@@ -140,6 +143,17 @@ function main() {
         }
         return;
     }
+
+    // Clean existing files before generating (for fresh sync)
+    console.log("[Clean] Removing existing generated files...");
+    const ruleNames = rules.map((r) => r.name);
+    for (const key of config.tools) {
+        const cleaned = tools[key].clean(ruleNames, PROJECT_ROOT);
+        if (cleaned.length > 0) {
+            cleaned.forEach((p) => console.log(`  Deleted: ${p}`));
+        }
+    }
+    console.log("");
 
     console.log("[Generate]");
     for (const key of config.tools) {

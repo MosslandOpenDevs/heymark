@@ -49,11 +49,11 @@ npm login
 # 1. 규칙 수정 후 테스트
 node scripts/sync.js --preview
 
-# 2. 버전 업데이트
+# 2. 버전 업데이트 (자동으로 Git 태그 생성)
 npm version patch  # 또는 minor, major
 
-# 3. GitHub에 푸시 (태그 포함)
-git push && git push --tags
+# 3. GitHub에 푸시
+git push --follow-tags  # 커밋과 태그를 함께 푸시
 
 # 4. NPM에 배포
 npm publish
@@ -65,6 +65,12 @@ npm publish
 - `minor` (1.0.0 → 1.1.0): 새 규칙 추가, 기능 개선
 - `major` (1.0.0 → 2.0.0): 호환성 깨지는 변경
 
+**Git 태그 설명:**
+
+- `npm version` 명령어는 자동으로 Git 태그를 생성합니다
+- `git push --follow-tags`: 일반 커밋과 태그를 함께 푸시 (추천)
+- 또는 `git push && git push --tags`: 커밋 푸시 후 모든 태그 푸시
+
 ## Integration
 
 ### Installation
@@ -72,39 +78,47 @@ npm publish
 ```bash
 # 패키지 설치
 npm install --save-dev @i2na/rule-book
-
-# 규칙 동기화
-npx rule-book-sync
 ```
 
-### Package.json Scripts
+### Usage with npx
 
-```json
-{
-    "scripts": {
-        "sync-rules": "rule-book-sync",
-        "sync-rules:cursor": "rule-book-sync -t cursor",
-        "sync-rules:clean": "rule-book-sync --clean",
-        "sync-rules:preview": "rule-book-sync --preview",
-        "postinstall": "rule-book-sync"
-    }
-}
-```
-
-**사용법:**
+설치 없이 바로 실행하거나, 설치 후 npx로 실행할 수 있습니다.
 
 ```bash
-# 스크립트 실행
-npm run sync-rules
+# 모든 도구 형식으로 변환 (기존 파일 자동 삭제 후 새로 생성)
+npx @i2na/rule-book
 
-# 업데이트 시
-npm update @i2na/rule-book
-npm run sync-rules
+# 특정 도구만 변환
+npx @i2na/rule-book -t cursor,claude
+
+# 미리보기 (파일 생성 없이 확인)
+npx @i2na/rule-book --preview
+
+# 생성된 파일 삭제
+npx @i2na/rule-book --clean
+
+# 도움말
+npx @i2na/rule-book --help
 ```
 
-`postinstall` 스크립트를 추가하면 `npm install` 시 자동으로 규칙이 동기화됩니다.
+**설치 없이 바로 사용:**
 
-스크립트는 호출된 프로젝트 루트에 도구별 파일을 생성합니다.
+```bash
+# 설치 없이 최신 버전으로 실행
+npx @i2na/rule-book@latest
+```
+
+**패키지 업데이트:**
+
+```bash
+npm update @i2na/rule-book
+npx @i2na/rule-book
+```
+
+**동작 방식:**
+
+- 기본적으로 기존 생성된 파일을 삭제한 후 새로 생성합니다
+- 이를 통해 이전 버전의 파일이 남지 않고 깔끔하게 동기화됩니다
 
 ## Getting Started
 
