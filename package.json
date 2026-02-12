@@ -4,7 +4,7 @@
     "description": "Centralized AI coding tool conventions with auto-conversion to multiple formats",
     "main": "scripts/sync.js",
     "bin": {
-        "rule-book-sync": "./scripts/sync.js"
+        "rule-book-sync": "scripts/sync.js"
     },
     "scripts": {
         "sync": "node scripts/sync.js",
