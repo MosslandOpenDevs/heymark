@@ -1,98 +1,54 @@
 # Rule Book
 
-AI 코딩 도구(Cursor, Claude Code, GitHub Copilot 등)의 컨벤션을 중앙에서 관리하고, 각 도구에 맞는 형식으로 자동 변환하는 시스템.
+AI 코딩 도구의 컨벤션을 중앙에서 관리하고, 각 도구 형식으로 자동 변환하는 시스템.
 
----
+| Section                             | Description       |
+| :---------------------------------- | :---------------- |
+| [Overview](#overview)               | 프로젝트 개요     |
+| [Features](#features)               | 핵심 기능         |
+| [Tech Stack](#tech-stack)           | 기술 스택         |
+| [Getting Started](#getting-started) | 시작하기          |
+| [Integration](#integration)         | 프로젝트 연동     |
+| [Tool Support](#tool-support)       | 지원 도구 및 확장 |
 
 ## Overview
 
 프로젝트마다 AI 도구별 규칙 파일을 따로 작성하면 관리가 파편화된다.
-이 저장소는 **단일 진실 공급원(Single Source of Truth)** 원칙에 따라,
-`rules/*.md` 파일 하나만 관리하면 8종의 AI 도구 형식으로 자동 변환해준다.
+이 시스템은 단일 진실 공급원(Single Source of Truth) 원칙에 따라, 한 곳에서 작성한 규칙을 여러 AI 도구 형식으로 자동 변환한다.
+규칙을 한 번만 작성하면 Cursor, Claude Code, GitHub Copilot, OpenAI Codex 등에서 즉시 사용할 수 있다.
 
-### Supported Tools
+## Features
 
-| Tool           | Output                                   | Format                                             |
-| :------------- | :--------------------------------------- | :------------------------------------------------- |
-| Cursor         | `.cursor/rules/*.mdc`                    | YAML frontmatter (description, globs, alwaysApply) |
-| Claude Code    | `.claude/skills/*/SKILL.md`              | YAML frontmatter (name, description)               |
-| GitHub Copilot | `.github/instructions/*.instructions.md` | applyTo glob 매칭                                  |
-| OpenAI Codex   | `AGENTS.md`                              | Merged markdown (Agent Rules v1.0)                 |
+- **단일 소스 관리**: 마크다운 파일 하나로 모든 AI 도구의 규칙 통합 관리
+- **자동 형식 변환**: 4종 AI 도구의 네이티브 형식으로 자동 변환 (YAML frontmatter, AGENTS.md 등)
+- **선택적 변환**: 특정 도구만 선택하여 변환 가능
+- **Git Submodule 연동**: 중앙 저장소에서 규칙 수정 시 모든 프로젝트에 일괄 반영
+- **플러그인 구조**: 변환 모듈 추가만으로 새 도구 지원 확장
 
----
+## Tech Stack
 
-## Structure
+- **Runtime**: Node.js
+- **Language**: JavaScript
+- **Core**: File system API, YAML frontmatter parsing
 
-```
-rule-book/
-├── rules/                   # 컨벤션 원본 (Single Source of Truth)
-│   ├── rule01.md
-│   └── rule02.md
-├── scripts/
-│   ├── sync.js              # 메인 실행 스크립트
-│   ├── lib/
-│   │   └── parser.js        # 공유 유틸리티
-│   └── tools/               # 도구별 변환 모듈 (자동 탐색)
-│       ├── cursor.js
-│       ├── claude.js
-│       ├── copilot.js
-│       ├── codex.js
-└── package.json
-```
+## Getting Started
 
-`scripts/tools/` 디렉토리에 파일을 추가하면 `sync.js`가 자동으로 인식한다.
-별도 등록 코드 없이 모듈 파일 하나만 작성하면 새 도구를 지원할 수 있다.
-
----
-
-## Usage
-
-### Quick Start
+### Basic Usage
 
 ```bash
-# 모든 도구에 대해 생성
+# 모든 도구 형식으로 변환
 node scripts/sync.js
 
-# npm script
-npm run sync
-```
-
-### Options
-
-```bash
-node scripts/sync.js [options]
-
---tools, -t <list>   변환할 도구를 콤마로 구분 (기본값: 전체)
---clean, -c          기존 생성 파일을 모두 삭제
---preview, -p        파일을 쓰지 않고 미리보기만 수행
---help, -h           도움말 표시
-```
-
-### Examples
-
-```bash
-# 전체 생성
-node scripts/sync.js
-
-# Cursor + Claude만 생성
+# 특정 도구만 변환
 node scripts/sync.js -t cursor,claude
 
-# 기존 파일 전체 삭제
-node scripts/sync.js --clean
-
-# 삭제 후 Copilot만 생성
-node scripts/sync.js -c && node scripts/sync.js -t copilot
-
-# 미리보기
+# 미리보기 (파일 생성 없이 확인)
 node scripts/sync.js --preview
 ```
 
----
+### Writing Rules
 
-## Writing Rules
-
-`rules/` 디렉토리에 마크다운 파일을 작성한다.
-YAML frontmatter에 메타데이터를 정의하면 도구별 변환 시 활용된다.
+규칙 디렉토리에 마크다운 파일 작성. YAML frontmatter로 메타데이터 정의.
 
 ```markdown
 ---
@@ -106,85 +62,48 @@ alwaysApply: true
 Rule content...
 ```
 
-### Frontmatter Fields
+## Integration
 
-| Field         | Description                                        | Used By         |
-| :------------ | :------------------------------------------------- | :-------------- |
-| `description` | 규칙 설명. AI가 자동 로딩 판단 시 참조             | Cursor, Claude  |
-| `globs`       | 파일 패턴 (콤마 구분). 해당 파일 작업 시 자동 적용 | Cursor, Copilot |
-| `alwaysApply` | `true`이면 항상 로드, `false`이면 조건부 로드      | Cursor          |
-| `name`        | 규칙 식별자 (미지정 시 파일명 사용)                | Claude          |
-
-frontmatter가 없는 파일도 정상 처리된다.
-파일명에서 이름을 추출하고, 기본값이 적용된다.
-
----
-
-## Project Integration
-
-이 저장소를 개별 프로젝트에서 Git Submodule로 연결하여 사용한다.
-
-### Setup (1회)
+### Git Submodule Setup
 
 ```bash
-cd my-project
+# 개별 프로젝트에서 실행
 git submodule add <this-repo-url> .conventions
-```
 
-### Sync
-
-```bash
+# 규칙 동기화
 node .conventions/scripts/sync.js
-```
 
-스크립트는 자신의 위치를 기준으로 `rules/` 경로를 자동 계산하고,
-`process.cwd()`(프로젝트 루트)에 도구별 파일을 생성한다.
-
-### Update
-
-중앙 저장소에서 규칙을 수정한 후, 개별 프로젝트에서 반영한다.
-
-```bash
+# 중앙 저장소 업데이트 반영
 git submodule update --remote
 node .conventions/scripts/sync.js
 ```
 
----
+스크립트는 호출된 프로젝트 루트에 도구별 파일을 생성한다.
 
-## Adding a New Tool
+## Tool Support
 
-`scripts/tools/` 에 모듈 파일을 추가한다.
-`sync.js`가 디렉토리를 자동 스캔하므로 등록 코드는 필요 없다.
+### Supported Tools
 
-모듈이 export해야 하는 인터페이스:
+| Tool           | Output Format               | Key Features                    |
+| :------------- | :-------------------------- | :------------------------------ |
+| Cursor         | `.cursor/rules/*.mdc`       | YAML frontmatter, glob 매칭     |
+| Claude Code    | `.claude/skills/*/SKILL.md` | 스킬 디렉토리 구조              |
+| GitHub Copilot | `.github/instructions/*.md` | applyTo 패턴 매칭               |
+| OpenAI Codex   | `AGENTS.md`                 | 단일 파일 병합 (Agent Rules v1) |
+
+### Adding New Tools
+
+변환 모듈을 추가하면 자동 인식된다. 필수 export 인터페이스:
 
 ```javascript
 module.exports = {
     name: "Tool Name",
     output: "output/path/pattern",
     generate(rules, projectRoot) {
-        /* 파일 생성 */ return rules.length;
+        /* ... */
     },
     clean(ruleNames, projectRoot) {
-        /* 파일 삭제 */ return [
-            /* 삭제된 경로 */
-        ];
+        /* ... */
     },
 };
 ```
-
----
-
-## Gitignore
-
-개별 프로젝트에서 자동 생성된 파일의 커밋 여부를 팀 정책에 따라 결정한다.
-
-```gitignore
-# 로컬에서만 생성해 쓰는 경우
-.cursor/rules/
-.claude/skills/
-.github/instructions/
-AGENTS.md
-```
-
-팀원 간 동일한 환경 보장이 필요하면 생성된 파일을 커밋에 포함하는 것도 유효한 방법이다.
