@@ -71,7 +71,7 @@ npm publish
 
 ```bash
 # 패키지 설치
-npm install --save-dev rule-book
+npm install --save-dev @i2na/rule-book
 
 # 규칙 동기화
 npx rule-book-sync
@@ -98,7 +98,7 @@ npx rule-book-sync
 npm run sync-rules
 
 # 업데이트 시
-npm update rule-book
+npm update @i2na/rule-book
 npm run sync-rules
 ```
 
