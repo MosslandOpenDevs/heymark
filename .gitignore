@@ -1,4 +1,15 @@
+# 생성된 규칙 파일들
 .cursor
 .claude
 .github
 AGENTS.md
+
+# NPM
+node_modules/
+.npmrc
+*.log
+
+# IDE
+.vscode/
+.idea/
+.DS_Store

@@ -5,9 +5,10 @@ AI 코딩 도구의 컨벤션을 중앙에서 관리하고, 각 도구 형식으
 1. [Overview](#overview)
 2. [Features](#features)
 3. [Tech Stack](#tech-stack)
-4. [Getting Started](#getting-started)
+4. [Publishing](#publishing)
 5. [Integration](#integration)
-6. [Tool Support](#tool-support)
+6. [Getting Started](#getting-started)
+7. [Tool Support](#tool-support)
 
 ## Overview
 
@@ -20,7 +21,7 @@ AI 코딩 도구의 컨벤션을 중앙에서 관리하고, 각 도구 형식으
 - **단일 소스 관리**: 마크다운 파일 하나로 모든 AI 도구의 규칙 통합 관리
 - **자동 형식 변환**: 4종 AI 도구의 네이티브 형식으로 자동 변환 (YAML frontmatter, AGENTS.md 등)
 - **선택적 변환**: 특정 도구만 선택하여 변환 가능
-- **Git Submodule 연동**: 중앙 저장소에서 규칙 수정 시 모든 프로젝트에 일괄 반영
+- **NPM 패키지 배포**: NPM registry를 통한 public 배포로 간편한 설치 및 버전 관리
 - **플러그인 구조**: 변환 모듈 추가만으로 새 도구 지원 확장
 
 ## Tech Stack
@@ -29,24 +30,89 @@ AI 코딩 도구의 컨벤션을 중앙에서 관리하고, 각 도구 형식으
 - **Language**: JavaScript
 - **Core**: File system API, YAML frontmatter parsing
 
-## Getting Started
+## Publishing
 
-### Basic Usage
+패키지 관리자용 가이드 (일반 사용자는 [Integration](#integration) 참고).
+
+### 초기 설정 (한 번만)
 
 ```bash
-# 모든 도구 형식으로 변환
-node scripts/sync.js
-
-# 특정 도구만 변환
-node scripts/sync.js -t cursor,claude
-
-# 미리보기 (파일 생성 없이 확인)
-node scripts/sync.js --preview
+# NPM 로그인
+npm login
+# Username: your-npm-username
+# Email: your-email@example.com
 ```
+
+### 배포 프로세스
+
+```bash
+# 1. 규칙 수정 후 테스트
+node scripts/sync.js --preview
+
+# 2. 버전 업데이트
+npm version patch  # 또는 minor, major
+
+# 3. GitHub에 푸시 (태그 포함)
+git push && git push --tags
+
+# 4. NPM에 배포
+npm publish
+```
+
+**버전 관리:**
+
+- `patch` (1.0.0 → 1.0.1): 버그 수정, 오타 수정
+- `minor` (1.0.0 → 1.1.0): 새 규칙 추가, 기능 개선
+- `major` (1.0.0 → 2.0.0): 호환성 깨지는 변경
+
+## Integration
+
+### Installation
+
+```bash
+# 패키지 설치
+npm install --save-dev @i2na/rule-book
+
+# 규칙 동기화
+npx rule-book-sync
+```
+
+### Package.json Scripts
+
+```json
+{
+    "scripts": {
+        "sync-rules": "rule-book-sync",
+        "sync-rules:cursor": "rule-book-sync -t cursor",
+        "sync-rules:clean": "rule-book-sync --clean",
+        "sync-rules:preview": "rule-book-sync --preview",
+        "postinstall": "rule-book-sync"
+    }
+}
+```
+
+**사용법:**
+
+```bash
+# 스크립트 실행
+npm run sync-rules
+
+# 업데이트 시
+npm update @i2na/rule-book
+npm run sync-rules
+```
+
+`postinstall` 스크립트를 추가하면 `npm install` 시 자동으로 규칙이 동기화됩니다.
+
+스크립트는 호출된 프로젝트 루트에 도구별 파일을 생성합니다.
+
+## Getting Started
+
+규칙을 작성하고 로컬에서 테스트하는 방법.
 
 ### Writing Rules
 
-규칙 디렉토리에 마크다운 파일 작성. YAML frontmatter로 메타데이터 정의.
+규칙 디렉토리(`rules/`)에 마크다운 파일 작성. YAML frontmatter로 메타데이터 정의:
 
 ```markdown
 ---
@@ -60,23 +126,21 @@ alwaysApply: true
 Rule content...
 ```
 
-## Integration
-
-### Git Submodule Setup
+### Local Testing
 
 ```bash
-# 개별 프로젝트에서 실행
-git submodule add <this-repo-url> .conventions
+# 모든 도구 형식으로 변환
+node scripts/sync.js
 
-# 규칙 동기화
-node .conventions/scripts/sync.js
+# 특정 도구만 변환
+node scripts/sync.js -t cursor,claude
 
-# 중앙 저장소 업데이트 반영
-git submodule update --remote
-node .conventions/scripts/sync.js
+# 미리보기 (파일 생성 없이 확인)
+node scripts/sync.js --preview
+
+# 생성된 파일 삭제
+node scripts/sync.js --clean
 ```
-
-스크립트는 호출된 프로젝트 루트에 도구별 파일을 생성한다.
 
 ## Tool Support
 

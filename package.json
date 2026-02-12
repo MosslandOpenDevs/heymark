@@ -1,0 +1,44 @@
+{
+    "name": "@i2na/rule-book",
+    "version": "1.0.0",
+    "description": "Centralized AI coding tool conventions with auto-conversion to multiple formats",
+    "main": "scripts/sync.js",
+    "bin": {
+        "rule-book-sync": "./scripts/sync.js"
+    },
+    "scripts": {
+        "sync": "node scripts/sync.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "ai",
+        "coding",
+        "conventions",
+        "cursor",
+        "claude",
+        "copilot",
+        "codex",
+        "rules"
+    ],
+    "author": {
+        "name": "i2na",
+        "email": "yena.e121@gmail.com",
+        "url": "https://github.com/i2na"
+    },
+    "license": "MIT",
+    "engines": {
+        "node": ">=14.0.0"
+    },
+    "files": [
+        "scripts/",
+        "rules/",
+        "README.md"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/i2na/rule-book.git"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}
