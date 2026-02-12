@@ -63,22 +63,28 @@ npm run sync
 node scripts/sync.js [options]
 
 --tools, -t <list>   변환할 도구를 콤마로 구분 (기본값: 전체)
---clean, -c          기존 생성 파일을 삭제한 후 재생성
---dry-run, -d        파일을 쓰지 않고 미리보기만 수행
+--clean, -c          기존 생성 파일을 모두 삭제
+--preview, -p        파일을 쓰지 않고 미리보기만 수행
 --help, -h           도움말 표시
 ```
 
 ### Examples
 
 ```bash
+# 전체 생성
+node scripts/sync.js
+
 # Cursor + Claude만 생성
 node scripts/sync.js -t cursor,claude
 
-# Copilot만 정리 후 재생성
-node scripts/sync.js -t copilot --clean
+# 기존 파일 전체 삭제
+node scripts/sync.js --clean
 
-# 전체 미리보기
-node scripts/sync.js --dry-run
+# 삭제 후 Copilot만 생성
+node scripts/sync.js -c && node scripts/sync.js -t copilot
+
+# 미리보기
+node scripts/sync.js --preview
 ```
 
 ---

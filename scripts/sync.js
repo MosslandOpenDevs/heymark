@@ -30,7 +30,7 @@ function parseArgs(availableTools) {
     const config = {
         tools: Object.keys(availableTools),
         clean: false,
-        dryRun: false,
+        preview: false,
         help: false,
     };
 
@@ -46,8 +46,8 @@ function parseArgs(availableTools) {
             config.tools = val.split(",").map((t) => t.trim().toLowerCase());
         } else if (arg === "--clean" || arg === "-c") {
             config.clean = true;
-        } else if (arg === "--dry-run" || arg === "-d") {
-            config.dryRun = true;
+        } else if (arg === "--preview" || arg === "-p") {
+            config.preview = true;
         } else if (arg === "--help" || arg === "-h") {
             config.help = true;
         } else {
@@ -83,18 +83,19 @@ Usage: node scripts/sync.js [options]
 
 Options:
   --tools, -t <list>  Comma-separated tool names (default: all)
-  --clean, -c         Remove previously generated files before sync
-  --dry-run, -d       Preview without writing files
+  --clean, -c         Remove all generated files
+  --preview, -p       Preview what will be generated without writing
   --help, -h          Show this help message
 
 Available tools:
 ${toolLines}
 
 Examples:
-  node scripts/sync.js                       # Sync all tools
-  node scripts/sync.js -t cursor,claude      # Cursor + Claude only
-  node scripts/sync.js -t copilot -c         # Clean then sync Copilot
-  node scripts/sync.js -d                    # Dry run (preview only)
+  node scripts/sync.js                       # Generate all tools
+  node scripts/sync.js -t cursor,claude      # Generate Cursor + Claude only
+  node scripts/sync.js -c                    # Clean all generated files
+  node scripts/sync.js -c && node scripts/sync.js -t cursor  # Clean then generate Cursor
+  node scripts/sync.js -p                    # Preview (no write)
 `);
 }
 
@@ -124,16 +125,18 @@ function main() {
         const ruleNames = rules.map((r) => r.name);
         for (const key of config.tools) {
             const cleaned = tools[key].clean(ruleNames, PROJECT_ROOT);
-            cleaned.forEach((p) => console.log(`  [Clean] ${p}`));
+            cleaned.forEach((p) => console.log(`  Deleted: ${p}`));
         }
         console.log("");
+        console.log(`[Done] Cleaned ${config.tools.length} tool(s) successfully.`);
+        return;
     }
 
-    if (config.dryRun) {
-        console.log("[Dry Run] Would generate:");
+    if (config.preview) {
+        console.log("[Preview] Would generate:");
         for (const key of config.tools) {
             const t = tools[key];
-            console.log(`  ${t.name.padEnd(16)} -> ${t.output}`);
+            console.log(`  ${t.name.padEnd(16)} -> ${t.output} (${rules.length} rules)`);
         }
         return;
     }
