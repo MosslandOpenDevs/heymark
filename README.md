@@ -2,14 +2,12 @@
 
 AI 코딩 도구의 컨벤션을 중앙에서 관리하고, 각 도구 형식으로 자동 변환하는 시스템.
 
-| Section                             | Description       |
-| :---------------------------------- | :---------------- |
-| [Overview](#overview)               | 프로젝트 개요     |
-| [Features](#features)               | 핵심 기능         |
-| [Tech Stack](#tech-stack)           | 기술 스택         |
-| [Getting Started](#getting-started) | 시작하기          |
-| [Integration](#integration)         | 프로젝트 연동     |
-| [Tool Support](#tool-support)       | 지원 도구 및 확장 |
+1. [Overview](#overview)
+2. [Features](#features)
+3. [Tech Stack](#tech-stack)
+4. [Getting Started](#getting-started)
+5. [Integration](#integration)
+6. [Tool Support](#tool-support)
 
 ## Overview
 

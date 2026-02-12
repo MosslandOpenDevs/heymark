@@ -36,12 +36,10 @@ README는 다음 순서를 따른다:
 ### Table of Contents
 
 ```markdown
-| Section                             | Description   |
-| :---------------------------------- | :------------ |
-| [Overview](#overview)               | 프로젝트 개요 |
-| [Features](#features)               | 핵심 기능     |
-| [Tech Stack](#tech-stack)           | 기술 스택     |
-| [Getting Started](#getting-started) | 시작하기      |
+1. [Overview](#overview)
+2. [Features](#features)
+3. [Tech Stack](#tech-stack)
+4. [Getting Started](#getting-started)
 ```
 
 ### Features
