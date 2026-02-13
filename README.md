@@ -103,11 +103,10 @@ npx heymark init git@github.com:org/my-rules.git
 npx heymark init https://github.com/org/my-rules.git --dir rules --branch main
 ```
 
-설정은 **`.heymark/config.json`**에 저장됩니다. 캐시(클론된 저장소)는 `.heymark/cache/`에 생성되므로, **.gitignore에 한 줄만** 추가하면 됩니다.
+설정은 **`.heymark/config.json`**에, 캐시(클론된 저장소)는 `.heymark/cache/`에 생성됩니다.
 
 ```gitignore
-# Heymark 캐시 (재생성 가능하므로 커밋하지 않음)
-.heymark/cache/
+.heymark/
 ```
 
 이후 `heymark` 실행 시 해당 저장소를 clone/pull 한 뒤 `.md` 파일들을 변환합니다.
