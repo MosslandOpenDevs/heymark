@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const { execSync } = require("child_process");
 
-const CACHE_DIR_NAME = ".heymark-cache";
+const CACHE_DIR_NAME = path.join(".heymark", "cache");
 
 /**
  * 저장소 URL에서 캐시 폴더명으로 쓸 수 있는 문자열 추출

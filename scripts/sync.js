@@ -4,7 +4,7 @@
 const fs = require("fs");
 const path = require("path");
 const { loadRules } = require("./lib/parser");
-const { CONFIG_FILENAME, loadConfig, writeConfig } = require("./lib/config");
+const { CONFIG_RELATIVE, loadConfig, writeConfig } = require("./lib/config");
 const { getRulesDirFromRepo } = require("./lib/repo");
 
 const SCRIPT_DIR = __dirname;
@@ -88,11 +88,11 @@ tool-specific configuration files for various AI coding assistants.
 Same rules everywhere: A computer, B computer, same remote repo.
 
 Usage:
-  heymark init <repo-url>     Set rules source (creates ${CONFIG_FILENAME})
+  heymark init <repo-url>     Set rules source (creates ${CONFIG_RELATIVE})
   heymark [options]           Sync from configured or --source repo
 
 Options:
-  --source, -s <url>   GitHub repo URL for this run (overrides ${CONFIG_FILENAME})
+  --source, -s <url>   GitHub repo URL for this run (overrides ${CONFIG_RELATIVE})
   --tools, -t <list>   Comma-separated tool names (default: all)
   --clean, -c          Remove all generated files
   --preview, -p        Preview what will be generated without writing
@@ -100,7 +100,7 @@ Options:
 
 Rules source (in order):
   1. --source <repo-url>
-  2. ${CONFIG_FILENAME} (set via 'heymark init <repo-url>')
+  2. ${CONFIG_RELATIVE} (set via 'heymark init <repo-url>')
   Private repos: use SSH (git@github.com:org/repo.git) or HTTPS with token.
 
 Available tools:

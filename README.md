@@ -86,7 +86,7 @@ npm install --save-dev heymark
 최초 1회만 설정하면 됩니다.
 
 ```bash
-# 규칙 소스 설정 (프로젝트 루트에 .heymark.json 생성)
+# 규칙 소스 설정 (.heymark/config.json 생성)
 npx heymark init <GitHub-저장소-URL>
 ```
 
@@ -103,7 +103,14 @@ npx heymark init git@github.com:org/my-rules.git
 npx heymark init https://github.com/org/my-rules.git --dir rules --branch main
 ```
 
-설정은 프로젝트 루트의 `.heymark.json`에 저장됩니다. 이후 `heymark` 실행 시 해당 저장소를 clone/pull 한 뒤 `.md` 파일들을 변환합니다.
+설정은 **`.heymark/config.json`**에 저장됩니다. 캐시(클론된 저장소)는 `.heymark/cache/`에 생성되므로, **.gitignore에 한 줄만** 추가하면 됩니다.
+
+```gitignore
+# Heymark 캐시 (재생성 가능하므로 커밋하지 않음)
+.heymark/cache/
+```
+
+이후 `heymark` 실행 시 해당 저장소를 clone/pull 한 뒤 `.md` 파일들을 변환합니다.
 
 ### Usage with npx
 
@@ -111,10 +118,10 @@ npx heymark init https://github.com/org/my-rules.git --dir rules --branch main
 규칙은 **원격 GitHub 저장소**에서 가져오며, 해당 저장소 안의 마크다운 파일을 각 AI 도구 형식으로 변환해 현재 프로젝트에 생성합니다.
 
 ```bash
-# .heymark.json에 설정된 외부 규칙 저장소에서 가져와 모든 도구 형식으로 변환 (기존 생성 파일 삭제 후 새로 생성)
+# .heymark/config.json에 설정된 외부 규칙 저장소에서 가져와 모든 도구 형식으로 변환 (기존 생성 파일 삭제 후 새로 생성)
 npx heymark
 
-# 이번에만 다른 외부 저장소 사용 (.heymark.json 무시)
+# 이번에만 다른 외부 저장소 사용 (.heymark/config.json 무시)
 npx heymark --source https://github.com/org/other-rules.git
 
 # 특정 도구만 변환
