@@ -9,6 +9,9 @@ node_modules/
 .npmrc
 *.log
 
+# Heymark cache (cloned repo for sync)
+.heymark-cache/
+
 # IDE
 .vscode/
 .idea/
