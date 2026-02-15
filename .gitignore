@@ -2,7 +2,7 @@
 .cursor
 .claude
 .github
-AGENTS.md
+.agents
 
 # NPM
 node_modules/

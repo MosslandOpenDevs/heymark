@@ -2,23 +2,40 @@
 
 const fs = require("fs");
 const path = require("path");
-const { writeMergedFile } = require("../lib/parser");
 
 module.exports = {
     name: "OpenAI Codex",
-    output: "AGENTS.md",
+    output: ".agents/skills/*/SKILL.md",
 
     generate(rules, projectRoot) {
-        writeMergedFile(path.join(projectRoot, "AGENTS.md"), rules);
+        for (const rule of rules) {
+            const skillDir = path.join(projectRoot, ".agents", "skills", rule.name);
+            fs.mkdirSync(skillDir, { recursive: true });
+
+            const lines = [
+                "---",
+                `name: ${rule.name}`,
+                `description: "${rule.description}"`,
+                "---",
+            ];
+            const content = lines.join("\n") + "\n\n" + rule.body + "\n";
+            fs.writeFileSync(path.join(skillDir, "SKILL.md"), content);
+        }
+
         return rules.length;
     },
 
-    clean(_ruleNames, projectRoot) {
-        const filePath = path.join(projectRoot, "AGENTS.md");
-        if (fs.existsSync(filePath)) {
-            fs.unlinkSync(filePath);
-            return ["AGENTS.md"];
+    clean(ruleNames, projectRoot) {
+        const cleaned = [];
+
+        for (const name of ruleNames) {
+            const skillDir = path.join(projectRoot, ".agents", "skills", name);
+            if (fs.existsSync(skillDir)) {
+                fs.rmSync(skillDir, { recursive: true });
+                cleaned.push(path.join(".agents", "skills", name));
+            }
         }
-        return [];
+
+        return cleaned;
     },
 };
