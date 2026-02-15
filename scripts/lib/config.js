@@ -32,8 +32,10 @@ function loadConfig(projectRoot) {
         }
         return {
             rulesSource: data.rulesSource.trim(),
-            branch: typeof data.branch === "string" && data.branch.trim() ? data.branch.trim() : "main",
-            rulesSourceDir: typeof data.rulesSourceDir === "string" ? data.rulesSourceDir.trim() : "",
+            branch:
+                typeof data.branch === "string" && data.branch.trim() ? data.branch.trim() : "main",
+            rulesSourceDir:
+                typeof data.rulesSourceDir === "string" ? data.rulesSourceDir.trim() : "",
         };
     } catch {
         return null;

@@ -14,7 +14,8 @@ const CACHE_DIR_NAME = path.join(".heymark", "cache");
 function sanitizeRepoName(url) {
     let s = url.trim();
     if (s.endsWith(".git")) s = s.slice(0, -4);
-    const match = s.match(/github\.com[:/]([^/]+\/[^/]+?)(?:\/|$)/) || s.match(/([^/]+\/[^/]+?)(?:\/|$)/);
+    const match =
+        s.match(/github\.com[:/]([^/]+\/[^/]+?)(?:\/|$)/) || s.match(/([^/]+\/[^/]+?)(?:\/|$)/);
     if (match) {
         return match[1].replace(/\//g, "-");
     }
@@ -52,10 +53,13 @@ function getRulesDirFromRepo(projectRoot, config) {
         }
     } else {
         try {
-            execSync("git fetch origin && git checkout --quiet . && git pull --quiet origin " + branch, {
-                stdio: "pipe",
-                cwd: clonePath,
-            });
+            execSync(
+                "git fetch origin && git checkout --quiet . && git pull --quiet origin " + branch,
+                {
+                    stdio: "pipe",
+                    cwd: clonePath,
+                }
+            );
         } catch (err) {
             // pull 실패 시(네트워크 등) 기존 클론 내용으로 진행
         }

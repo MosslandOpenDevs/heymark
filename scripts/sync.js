@@ -138,7 +138,9 @@ function runInit(initArgs) {
     }
     const config = { rulesSource: repoUrl.trim(), branch, rulesSourceDir };
     const configPath = writeConfig(PROJECT_ROOT, config);
-    console.log(`[Init] Rules source saved to ${path.relative(PROJECT_ROOT, configPath) || configPath}`);
+    console.log(
+        `[Init] Rules source saved to ${path.relative(PROJECT_ROOT, configPath) || configPath}`
+    );
     console.log(`  rulesSource: ${config.rulesSource}`);
     if (branch !== "main") console.log(`  branch: ${branch}`);
     if (rulesSourceDir) console.log(`  rulesSourceDir: ${rulesSourceDir}`);
