@@ -185,5 +185,3 @@ module.exports = {
 | GitHub Copilot | `.github/instructions/*.instructions.md` | `applyTo` 다중 패턴 매핑                                 |
 | OpenAI Codex   | `.agents/skills/*/SKILL.md`              | 스킬 디렉토리 구조 + YAML frontmatter                    |
 | Antigravity    | `.agent/skills/*/SKILL.md`               | 스킬 디렉토리 구조 + YAML frontmatter                    |
-
-Antigravity 스킬 파일 경로: `/.agent/skills/<skill-folder>/SKILL.md`
