@@ -73,24 +73,13 @@ npm publish
 
 ## Integration
 
-### Installation
-
-```bash
-# 패키지 설치
-npm install --save-dev heymark
-```
-
-### 초기 설정 (규칙 소스 = 원격 GitHub 저장소)
-
-규칙은 **원격 GitHub 저장소(Public/Private)** 에서 읽습니다.  
+Rule/Skill은 **원격 GitHub 저장소(Public/Private)** 에서 읽습니다.  
 최초 1회만 설정하면 됩니다.
 
 ```bash
 # 규칙 소스 설정 (.heymark/config.json 생성)
 npx heymark init <GitHub-저장소-URL>
 ```
-
-예시:
 
 ```bash
 # HTTPS (Private이면 Git credential/토큰 설정 필요)
@@ -103,17 +92,9 @@ npx heymark init git@github.com:org/my-rules.git
 npx heymark init https://github.com/org/my-rules.git --dir rules --branch main
 ```
 
-설정은 **`.heymark/config.json`**에, 캐시(클론된 저장소)는 `.heymark/cache/`에 생성됩니다.
-
-```gitignore
-.heymark/
-```
-
-이후 `heymark` 실행 시 해당 저장소를 clone/pull 한 뒤 `.md` 파일들을 변환합니다.
-
 ### Usage with npx
 
-설치 없이 바로 실행하거나, 설치 후 npx로 실행할 수 있습니다.  
+설치 없이 npx로 바로 실행할 수 있습니다.  
 규칙은 **원격 GitHub 저장소**에서 가져오며, 해당 저장소 안의 마크다운 파일을 각 AI 도구 형식으로 변환해 현재 프로젝트에 생성합니다.
 
 ```bash
@@ -136,28 +117,7 @@ npx heymark --clean
 npx heymark --help
 ```
 
-**설치 없이 바로 사용:**
-
-```bash
-# 설치 없이 최신 버전으로 실행
-npx heymark@latest
-```
-
-**패키지 업데이트:**
-
-```bash
-npm update heymark
-npx heymark
-```
-
-**동작 방식:**
-
-- 기본적으로 기존 생성된 파일을 삭제한 후 새로 생성합니다
-- 이를 통해 이전 버전의 파일이 남지 않고 깔끔하게 동기화됩니다
-
 ## Getting Started
-
-규칙을 작성하고 로컬에서 테스트하는 방법.
 
 ### Writing Rules
 
@@ -199,15 +159,6 @@ node scripts/sync.js --clean
 
 ## Tool Support
 
-### Supported Tools
-
-| Tool           | Output Format               | Key Features                    |
-| :------------- | :-------------------------- | :------------------------------ |
-| Cursor         | `.cursor/rules/*.mdc`       | YAML frontmatter, glob 매칭     |
-| Claude Code    | `.claude/skills/*/SKILL.md` | 스킬 디렉토리 구조              |
-| GitHub Copilot | `.github/instructions/*.md` | applyTo 패턴 매칭               |
-| OpenAI Codex   | `AGENTS.md`                 | 단일 파일 병합 (Agent Rules v1) |
-
 ### Adding New Tools
 
 변환 모듈을 추가하면 자동 인식된다. 필수 export 인터페이스:
@@ -224,3 +175,12 @@ module.exports = {
     },
 };
 ```
+
+### Supported Tools
+
+| Tool           | Output Format                            | Key Features                                             |
+| :------------- | :--------------------------------------- | :------------------------------------------------------- |
+| Cursor         | `.cursor/rules/*.mdc`                    | YAML frontmatter (`description`, `globs`, `alwaysApply`) |
+| Claude Code    | `.claude/skills/*/SKILL.md`              | 스킬 디렉토리 구조 + YAML frontmatter                    |
+| GitHub Copilot | `.github/instructions/*.instructions.md` | `applyTo` 다중 패턴 매핑                                 |
+| OpenAI Codex   | `.agents/skills/*/SKILL.md`              | 스킬 디렉토리 구조 + YAML frontmatter                    |
