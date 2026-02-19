@@ -14,12 +14,12 @@ AI 코딩 도구의 컨벤션을 중앙에서 관리하고, 각 도구 형식으
 
 프로젝트마다 AI 도구별 규칙 파일을 따로 작성하면 관리가 파편화된다.
 이 시스템은 단일 진실 공급원(Single Source of Truth) 원칙에 따라, 한 곳에서 작성한 규칙을 여러 AI 도구 형식으로 자동 변환한다.
-규칙을 한 번만 작성하면 Cursor, Claude Code, GitHub Copilot, OpenAI Codex 등에서 즉시 사용할 수 있다.
+규칙을 한 번만 작성하면 Cursor, Claude Code, GitHub Copilot, OpenAI Codex, Antigravity 등에서 즉시 사용할 수 있다.
 
 ## Features
 
 - **단일 소스 관리**: 마크다운 파일 하나로 모든 AI 도구의 규칙 통합 관리
-- **자동 형식 변환**: 4종 AI 도구의 네이티브 형식으로 자동 변환 (YAML frontmatter, AGENTS.md 등)
+- **자동 형식 변환**: 5종 AI 도구의 네이티브 형식으로 자동 변환 (YAML frontmatter, AGENTS.md 등)
 - **선택적 변환**: 특정 도구만 선택하여 변환 가능
 - **NPM 패키지 배포**: NPM registry를 통한 public 배포로 간편한 설치 및 버전 관리
 - **플러그인 구조**: 변환 모듈 추가만으로 새 도구 지원 확장
@@ -184,3 +184,6 @@ module.exports = {
 | Claude Code    | `.claude/skills/*/SKILL.md`              | 스킬 디렉토리 구조 + YAML frontmatter                    |
 | GitHub Copilot | `.github/instructions/*.instructions.md` | `applyTo` 다중 패턴 매핑                                 |
 | OpenAI Codex   | `.agents/skills/*/SKILL.md`              | 스킬 디렉토리 구조 + YAML frontmatter                    |
+| Antigravity    | `.agent/skills/*/SKILL.md`               | 스킬 디렉토리 구조 + YAML frontmatter                    |
+
+Antigravity 스킬 파일 경로: `/.agent/skills/<skill-folder>/SKILL.md`
