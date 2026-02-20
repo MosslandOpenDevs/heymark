@@ -3,6 +3,7 @@
 .claude
 .github
 .agents
+.agent
 
 # NPM
 node_modules/
