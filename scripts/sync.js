@@ -3,19 +3,41 @@
 
 const fs = require("fs");
 const path = require("path");
+const { CONFIG_RELATIVE, DEFAULT_BRANCH, loadConfig, writeConfig } = require("./lib/config");
 const { loadRules } = require("./lib/parser");
-const { CONFIG_RELATIVE, loadConfig, writeConfig } = require("./lib/config");
 const { getRulesDirFromRepo } = require("./lib/repo");
 
 const SCRIPT_DIR = __dirname;
 const PROJECT_ROOT = process.cwd();
+
+const INIT_SUBCOMMAND = "init";
+const OPTION_TOOLS = "--tools";
+const OPTION_SOURCE = "--source";
+const OPTION_CLEAN = "--clean";
+const OPTION_PREVIEW = "--preview";
+const OPTION_HELP = "--help";
+const SHORT_TOOLS = "-t";
+const SHORT_SOURCE = "-s";
+const SHORT_CLEAN = "-c";
+const SHORT_PREVIEW = "-p";
+const SHORT_HELP = "-h";
+const OPTION_BRANCH = "--branch";
+const OPTION_DIR = "--dir";
+const SHORT_BRANCH = "-b";
+const SHORT_DIR = "-d";
+
+function exitWithError(message, details = []) {
+    console.error(`[Error] ${message}`);
+    details.forEach((detail) => console.error(`  ${detail}`));
+    process.exit(1);
+}
 
 function discoverTools() {
     const toolsDir = path.join(SCRIPT_DIR, "tools");
     const registry = {};
 
     fs.readdirSync(toolsDir)
-        .filter((f) => f.endsWith(".js"))
+        .filter((fileName) => fileName.endsWith(".js"))
         .sort()
         .forEach((file) => {
             const key = path.basename(file, ".js");
@@ -23,6 +45,19 @@ function discoverTools() {
         });
 
     return registry;
+}
+
+function parseToolList(rawValue) {
+    const parsed = rawValue
+        .split(",")
+        .map((tool) => tool.trim().toLowerCase())
+        .filter(Boolean);
+
+    if (parsed.length === 0) {
+        exitWithError("--tools requires a comma-separated list.");
+    }
+
+    return parsed;
 }
 
 function parseArgs(availableTools) {
@@ -38,38 +73,34 @@ function parseArgs(availableTools) {
     for (let i = 0; i < args.length; i++) {
         const arg = args[i];
 
-        if (arg === "--tools" || arg === "-t") {
-            const val = args[++i];
-            if (!val) {
-                console.error("[Error] --tools requires a comma-separated list.");
-                process.exit(1);
+        if (arg === OPTION_TOOLS || arg === SHORT_TOOLS) {
+            const value = args[++i];
+            if (!value) {
+                exitWithError("--tools requires a comma-separated list.");
             }
-            config.tools = val.split(",").map((t) => t.trim().toLowerCase());
-        } else if (arg === "--clean" || arg === "-c") {
+            config.tools = parseToolList(value);
+        } else if (arg === OPTION_CLEAN || arg === SHORT_CLEAN) {
             config.clean = true;
-        } else if (arg === "--preview" || arg === "-p") {
+        } else if (arg === OPTION_PREVIEW || arg === SHORT_PREVIEW) {
             config.preview = true;
-        } else if (arg === "--source" || arg === "-s") {
-            const val = args[++i];
-            if (!val) {
-                console.error("[Error] --source requires a GitHub repository URL.");
-                process.exit(1);
+        } else if (arg === OPTION_SOURCE || arg === SHORT_SOURCE) {
+            const value = args[++i];
+            if (!value) {
+                exitWithError("--source requires a GitHub repository URL.");
             }
-            config.source = val.trim();
-        } else if (arg === "--help" || arg === "-h") {
+            config.source = value.trim();
+        } else if (arg === OPTION_HELP || arg === SHORT_HELP) {
             config.help = true;
         } else {
-            console.error(`[Error] Unknown option: ${arg}`);
-            console.error("  Use --help for usage information.");
-            process.exit(1);
+            exitWithError(`Unknown option: ${arg}`, ["Use --help for usage information."]);
         }
     }
 
-    const invalid = config.tools.filter((t) => !availableTools[t]);
-    if (invalid.length > 0) {
-        console.error(`[Error] Unknown tool(s): ${invalid.join(", ")}`);
-        console.error(`  Available: ${Object.keys(availableTools).join(", ")}`);
-        process.exit(1);
+    const invalidTools = config.tools.filter((tool) => !availableTools[tool]);
+    if (invalidTools.length > 0) {
+        exitWithError(`Unknown tool(s): ${invalidTools.join(", ")}`, [
+            `Available: ${Object.keys(availableTools).join(", ")}`,
+        ]);
     }
 
     return config;
@@ -77,7 +108,11 @@ function parseArgs(availableTools) {
 
 function showHelp(tools) {
     const toolLines = Object.entries(tools)
-        .map(([key, t]) => `  ${key.padEnd(10)} ${t.name.padEnd(16)} -> ${t.output}`)
+        .map(([toolKey, toolDefinition]) => {
+            const paddedKey = toolKey.padEnd(10);
+            const paddedName = toolDefinition.name.padEnd(16);
+            return `  ${paddedKey} ${paddedName} -> ${toolDefinition.output}`;
+        })
         .join("\n");
 
     console.log(`
@@ -117,49 +152,93 @@ Examples:
 `);
 }
 
-function runInit(initArgs) {
-    const args = initArgs.slice(0);
-    const repoUrl = args[0];
+function parseInitArgs(initArgs) {
+    const repoUrl = initArgs[0];
     if (!repoUrl || repoUrl.startsWith("--")) {
-        console.error("[Error] init requires a GitHub repository URL.");
-        console.error("  Example: heymark init https://github.com/org/my-rules.git");
-        console.error("  Example: heymark init git@github.com:org/my-rules.git");
-        console.error("  Optional: --branch <branch>  --dir <subdir>  (e.g. --dir rules)");
-        process.exit(1);
+        exitWithError("init requires a GitHub repository URL.", [
+            "Example: heymark init https://github.com/org/my-rules.git",
+            "Example: heymark init git@github.com:org/my-rules.git",
+            "Optional: --branch <branch>  --dir <subdir>  (e.g. --dir rules)",
+        ]);
     }
-    let branch = "main";
+
+    let branch = DEFAULT_BRANCH;
     let rulesSourceDir = "";
-    for (let i = 1; i < args.length; i++) {
-        if ((args[i] === "--branch" || args[i] === "-b") && args[i + 1]) {
-            branch = args[++i].trim();
-        } else if ((args[i] === "--dir" || args[i] === "-d") && args[i + 1]) {
-            rulesSourceDir = args[++i].trim();
+
+    for (let i = 1; i < initArgs.length; i++) {
+        const arg = initArgs[i];
+
+        if (arg === OPTION_BRANCH || arg === SHORT_BRANCH) {
+            const value = initArgs[++i];
+            if (!value) {
+                exitWithError("--branch requires a branch name.");
+            }
+            branch = value.trim();
+            continue;
         }
+
+        if (arg === OPTION_DIR || arg === SHORT_DIR) {
+            const value = initArgs[++i];
+            if (!value) {
+                exitWithError("--dir requires a directory path.");
+            }
+            rulesSourceDir = value.trim();
+            continue;
+        }
+
+        exitWithError(`Unknown option for init: ${arg}`);
     }
-    const config = { rulesSource: repoUrl.trim(), branch, rulesSourceDir };
+
+    return { rulesSource: repoUrl.trim(), branch, rulesSourceDir };
+}
+
+function runInit(initArgs) {
+    const config = parseInitArgs(initArgs);
     const configPath = writeConfig(PROJECT_ROOT, config);
+
     console.log(
         `[Init] Rules source saved to ${path.relative(PROJECT_ROOT, configPath) || configPath}`
     );
     console.log(`  rulesSource: ${config.rulesSource}`);
-    if (branch !== "main") console.log(`  branch: ${branch}`);
-    if (rulesSourceDir) console.log(`  rulesSourceDir: ${rulesSourceDir}`);
+    if (config.branch !== DEFAULT_BRANCH) {
+        console.log(`  branch: ${config.branch}`);
+    }
+    if (config.rulesSourceDir) {
+        console.log(`  rulesSourceDir: ${config.rulesSourceDir}`);
+    }
     console.log("");
     console.log("Run 'heymark' to fetch rules from the repo and generate tool configs.");
 }
 
 function resolveRulesDir(config) {
     const repoConfig = config.source
-        ? { rulesSource: config.source, branch: "main", rulesSourceDir: "" }
+        ? { rulesSource: config.source, branch: DEFAULT_BRANCH, rulesSourceDir: "" }
         : loadConfig(PROJECT_ROOT);
-    if (!repoConfig) return null;
+
+    if (!repoConfig) {
+        return null;
+    }
+
     return getRulesDirFromRepo(PROJECT_ROOT, repoConfig);
+}
+
+function cleanGeneratedFiles(tools, selectedTools, ruleNames, onlyPrintWhenDeleted) {
+    for (const toolKey of selectedTools) {
+        const cleanedPaths = tools[toolKey].clean(ruleNames, PROJECT_ROOT);
+        if (onlyPrintWhenDeleted && cleanedPaths.length === 0) {
+            continue;
+        }
+
+        cleanedPaths.forEach((filePath) => {
+            console.log(`  Deleted: ${filePath}`);
+        });
+    }
 }
 
 function main() {
     const args = process.argv.slice(2);
     const subcommand = args[0];
-    if (subcommand === "init") {
+    if (subcommand === INIT_SUBCOMMAND) {
         runInit(args.slice(1));
         return;
     }
@@ -172,8 +251,8 @@ function main() {
         return;
     }
 
-    const RULES_SRC_DIR = resolveRulesDir(config);
-    if (!RULES_SRC_DIR) {
+    const rulesSourceDir = resolveRulesDir(config);
+    if (!rulesSourceDir) {
         console.error("[Error] Rules source not set.");
         console.error("  Run: heymark init <github-repo-url>");
         console.error("  Example: heymark init https://github.com/org/my-rules.git");
@@ -181,7 +260,7 @@ function main() {
         process.exit(1);
     }
 
-    const rulesRelPath = path.relative(PROJECT_ROOT, RULES_SRC_DIR) || ".";
+    const rulesRelPath = path.relative(PROJECT_ROOT, rulesSourceDir) || ".";
 
     console.log("[Sync] Starting convention sync...");
     console.log(`  Source:  ${rulesRelPath} (from remote repo)`);
@@ -189,17 +268,15 @@ function main() {
     console.log(`  Tools:   ${config.tools.join(", ")}`);
     console.log("");
 
-    const rules = loadRules(RULES_SRC_DIR);
-    console.log(`[Load] ${rules.length} rule(s): ${rules.map((r) => r.name).join(", ")}`);
+    const rules = loadRules(rulesSourceDir);
+    console.log(`[Load] ${rules.length} rule(s): ${rules.map((rule) => rule.name).join(", ")}`);
     console.log("");
+
+    const ruleNames = rules.map((rule) => rule.name);
 
     if (config.clean) {
         console.log("[Clean] Removing generated files...");
-        const ruleNames = rules.map((r) => r.name);
-        for (const key of config.tools) {
-            const cleaned = tools[key].clean(ruleNames, PROJECT_ROOT);
-            cleaned.forEach((p) => console.log(`  Deleted: ${p}`));
-        }
+        cleanGeneratedFiles(tools, config.tools, ruleNames, false);
         console.log("");
         console.log(`[Done] Cleaned ${config.tools.length} tool(s) successfully.`);
         return;
@@ -207,29 +284,25 @@ function main() {
 
     if (config.preview) {
         console.log("[Preview] Would generate:");
-        for (const key of config.tools) {
-            const t = tools[key];
-            console.log(`  ${t.name.padEnd(16)} -> ${t.output} (${rules.length} rules)`);
+        for (const toolKey of config.tools) {
+            const toolDefinition = tools[toolKey];
+            const summary = `${toolDefinition.name.padEnd(16)} -> ${toolDefinition.output}`;
+            console.log(`  ${summary} (${rules.length} rules)`);
         }
         return;
     }
 
-    // Clean existing files before generating (for fresh sync)
+    // Ensure regenerated output is always fresh.
     console.log("[Clean] Removing existing generated files...");
-    const ruleNames = rules.map((r) => r.name);
-    for (const key of config.tools) {
-        const cleaned = tools[key].clean(ruleNames, PROJECT_ROOT);
-        if (cleaned.length > 0) {
-            cleaned.forEach((p) => console.log(`  Deleted: ${p}`));
-        }
-    }
+    cleanGeneratedFiles(tools, config.tools, ruleNames, true);
     console.log("");
 
     console.log("[Generate]");
-    for (const key of config.tools) {
-        const t = tools[key];
-        const count = t.generate(rules, PROJECT_ROOT);
-        console.log(`  ${t.name.padEnd(16)} -> ${t.output} (${count} rules)`);
+    for (const toolKey of config.tools) {
+        const toolDefinition = tools[toolKey];
+        const count = toolDefinition.generate(rules, PROJECT_ROOT);
+        const summary = `${toolDefinition.name.padEnd(16)} -> ${toolDefinition.output}`;
+        console.log(`  ${summary} (${count} rules)`);
     }
 
     console.log("");

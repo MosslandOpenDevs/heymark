@@ -3,40 +3,51 @@
 const fs = require("fs");
 const path = require("path");
 
-module.exports = {
-  name: "Claude Code",
-  output: ".claude/skills/*/SKILL.md",
+const SKILLS_DIR = path.join(".claude", "skills");
+const SKILL_FILE_NAME = "SKILL.md";
 
-  generate(rules, projectRoot) {
-    for (const rule of rules) {
-      const skillDir = path.join(projectRoot, ".claude", "skills", rule.name);
-      fs.mkdirSync(skillDir, { recursive: true });
+function getSkillDir(projectRoot, ruleName) {
+    return path.join(projectRoot, SKILLS_DIR, ruleName);
+}
 
-      const lines = [
+function createSkillContent(rule) {
+    const frontmatterLines = [
         "---",
         `name: ${rule.name}`,
         `description: "${rule.description}"`,
         "---",
-      ];
+    ];
 
-      const content = lines.join("\n") + "\n\n" + rule.body + "\n";
-      fs.writeFileSync(path.join(skillDir, "SKILL.md"), content);
-    }
+    return `${frontmatterLines.join("\n")}\n\n${rule.body}\n`;
+}
 
-    return rules.length;
-  },
+module.exports = {
+    name: "Claude Code",
+    output: ".claude/skills/*/SKILL.md",
 
-  clean(ruleNames, projectRoot) {
-    const cleaned = [];
+    generate(rules, projectRoot) {
+        for (const rule of rules) {
+            const skillDir = getSkillDir(projectRoot, rule.name);
+            fs.mkdirSync(skillDir, { recursive: true });
+            const filePath = path.join(skillDir, SKILL_FILE_NAME);
+            const content = createSkillContent(rule);
+            fs.writeFileSync(filePath, content, "utf8");
+        }
 
-    for (const name of ruleNames) {
-      const skillDir = path.join(projectRoot, ".claude", "skills", name);
-      if (fs.existsSync(skillDir)) {
-        fs.rmSync(skillDir, { recursive: true });
-        cleaned.push(path.join(".claude", "skills", name));
-      }
-    }
+        return rules.length;
+    },
 
-    return cleaned;
-  },
+    clean(ruleNames, projectRoot) {
+        const cleaned = [];
+
+        for (const ruleName of ruleNames) {
+            const skillDir = getSkillDir(projectRoot, ruleName);
+            if (fs.existsSync(skillDir)) {
+                fs.rmSync(skillDir, { recursive: true });
+                cleaned.push(path.join(SKILLS_DIR, ruleName));
+            }
+        }
+
+        return cleaned;
+    },
 };
