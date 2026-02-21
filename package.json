@@ -1,35 +1,37 @@
 {
     "name": "heymark",
     "version": "1.1.2",
-    "description": "Centralized AI coding tool conventions with auto-conversion to multiple formats",
+    "description": "Rules & Skills Hub for AI Coding Assistants",
+    "type": "commonjs",
     "main": "scripts/sync.js",
-    "bin": {
-        "heymark": "scripts/sync.js"
-    },
-    "scripts": {
-        "sync": "node scripts/sync.js",
-        "init": "node scripts/sync.js init",
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
+    "bin": "scripts/sync.js",
     "keywords": [
-        "ai",
-        "coding",
-        "conventions",
+        "ai-coding-assistant",
+        "ai-agent",
+        "ai-skill",
+        "ai-rule",
+        "skill-management",
         "cursor",
-        "claude",
+        "claude-code",
         "copilot",
         "codex",
-        "rules"
+        "antigravity"
     ],
+    "homepage": "https://github.com/MosslandOpenDevs/heymark#readme",
+    "bugs": {
+        "url": "https://github.com/MosslandOpenDevs/heymark/issues",
+        "email": "yena@moss.land"
+    },
+    "license": "MIT",
     "author": {
-        "name": "i2na",
-        "email": "yena.e121@gmail.com",
+        "name": "i-2na",
+        "email": "yena@moss.land",
         "url": "https://github.com/i2na"
     },
     "contributors": [
         {
-            "name": "i2na",
-            "email": "yena.e121@gmail.com",
+            "name": "i-2na",
+            "email": "yena@moss.land",
             "url": "https://github.com/i2na"
         },
         {
@@ -38,14 +40,11 @@
             "url": "https://github.com/yezzero"
         }
     ],
-    "license": "MIT",
     "engines": {
         "node": ">=14.0.0"
     },
     "files": [
-        "scripts/",
-        "rules/",
-        "README.md"
+        "scripts/"
     ],
     "repository": {
         "type": "git",
