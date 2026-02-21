@@ -19,6 +19,10 @@ different Skill file format, so the same content is often maintained multiple ti
 Heymark automates format conversion and sync around a single Skill repository (Single Source of Truth),
 reducing repetitive operational work and maximizing AI workflow efficiency.
 
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/3819f0d7-9bb2-474f-a58a-da3d1344207d" />
+
+_This shows Skills being automatically loaded based on prompt context._
+
 ## Features
 
 - Single source management: Manage Markdown-based Skills in one place
@@ -69,6 +73,10 @@ Skill content...
 npx heymark link --samples # quickly link sample Skills
 npx heymark sync .
 ```
+
+_After `link` and `sync`, Skill files are generated in each tool's expected directory._
+
+<img width="250" alt="image" src="https://github.com/user-attachments/assets/0e5bc974-12d6-4aab-b0aa-16ca5659f973" />
 
 ### Commands
 

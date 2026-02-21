@@ -17,6 +17,10 @@ AI Tool은 프롬프트 문맥에 맞는 Skill을 로드해 반복적인 지시�
 Heymark는 단일 Skill 저장소(Single Source of Truth)를 중심으로 도구별 형식 변환과 동기화를 자동화해,
 반복 운영 비용을 줄이고 AI 활용 효율을 극대화합니다.
 
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/3819f0d7-9bb2-474f-a58a-da3d1344207d" />
+
+_프롬프트 문맥에 맞는 Skill을 자동 로드하는 모습입니다._
+
 ## Features
 
 - 단일 소스 관리: Markdown 기반 Skill을 한 곳에서 관리
@@ -67,6 +71,10 @@ Skill content...
 npx heymark link --samples # 샘플 Skill 바로 연결
 npx heymark sync .
 ```
+
+_`link`와 `sync` 실행 후, 각 도구가 요구하는 디렉터리에 Skill 파일이 생성됩니다._
+
+<img width="250" alt="image" src="https://github.com/user-attachments/assets/0e5bc974-12d6-4aab-b0aa-16ca5659f973" />
 
 ### Commands
 
