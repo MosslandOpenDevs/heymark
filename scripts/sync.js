@@ -23,8 +23,11 @@ const SHORT_PREVIEW = "-p";
 const SHORT_HELP = "-h";
 const OPTION_BRANCH = "--branch";
 const OPTION_DIR = "--dir";
+const OPTION_SAMPLES = "--samples";
 const SHORT_BRANCH = "-b";
 const SHORT_DIR = "-d";
+const SAMPLES_REPO_URL = "https://github.com/MosslandOpenDevs/heymark.git";
+const SAMPLES_SOURCE_DIR = "samples";
 
 function exitWithError(message, details = []) {
     console.error(`[Error] ${message}`);
@@ -153,9 +156,24 @@ Examples:
 }
 
 function parseInitArgs(initArgs) {
+    if (initArgs.length === 1 && initArgs[0] === OPTION_SAMPLES) {
+        return {
+            rulesSource: SAMPLES_REPO_URL,
+            branch: DEFAULT_BRANCH,
+            rulesSourceDir: SAMPLES_SOURCE_DIR,
+        };
+    }
+
+    if (initArgs.includes(OPTION_SAMPLES)) {
+        exitWithError("--samples cannot be combined with other init arguments.", [
+            "Use: heymark init --samples",
+        ]);
+    }
+
     const repoUrl = initArgs[0];
     if (!repoUrl || repoUrl.startsWith("--")) {
         exitWithError("init requires a GitHub repository URL.", [
+            "Sample preset: heymark init --samples",
             "Example: heymark init https://github.com/org/my-rules.git",
             "Example: heymark init git@github.com:org/my-rules.git",
             "Optional: --branch <branch>  --dir <subdir>  (e.g. --dir rules)",
