@@ -1,19 +1,9 @@
-# 생성된 규칙 파일들
-.cursor
-.claude
-.github
-.agents
-.agent
-
-# NPM
 node_modules/
-.npmrc
-*.log
-
-# Heymark (config + cache)
-.heymark/
-
-# IDE
-.vscode/
-.idea/
 .DS_Store
+
+.agent
+.agents
+.claude
+.cursor
+.github
+.heymark

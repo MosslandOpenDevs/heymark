@@ -1,20 +1,12 @@
-# NPM 패키지에서 제외할 파일들
-
-# Git
 .git/
 .gitignore
 
-# IDE
-.vscode/
-.idea/
-
-# 생성된 파일
-.cursor/
-.claude/
-.github/instructions/
-AGENTS.md
-
-# 기타
-*.log
-.DS_Store
 node_modules/
+.DS_Store
+
+.agent
+.agents
+.claude
+.cursor
+.github
+.heymark
