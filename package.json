@@ -3,8 +3,8 @@
     "version": "1.2.0",
     "description": "Rules & Skills Hub for AI Coding Assistants",
     "type": "commonjs",
-    "main": "scripts/sync.js",
-    "bin": "scripts/sync.js",
+    "main": "scripts/cli.js",
+    "bin": "scripts/cli.js",
     "keywords": [
         "ai-coding-assistant",
         "ai-agent",

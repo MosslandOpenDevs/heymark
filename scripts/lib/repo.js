@@ -30,24 +30,24 @@ function sanitizeRepoName(repoUrl) {
     return normalized.replace(/[^a-zA-Z0-9._-]/g, "-") || "repo";
 }
 
-function cloneRulesRepo(projectRoot, clonePath, branch, repoUrl) {
+function cloneLinkedRepo(projectRoot, clonePath, branch, repoUrl) {
     execSync(`git clone --depth 1 --branch "${branch}" "${repoUrl}" "${clonePath}"`, {
         stdio: "inherit",
         cwd: projectRoot,
     });
 }
 
-function updateRulesRepo(clonePath, branch) {
+function updateLinkedRepo(clonePath, branch) {
     execSync(`git fetch origin && git checkout --quiet . && git pull --quiet origin "${branch}"`, {
         stdio: "pipe",
         cwd: clonePath,
     });
 }
 
-function resolveRulesDirectory(clonePath, rulesSourceDir) {
-    const rulesDir = rulesSourceDir ? path.join(clonePath, rulesSourceDir) : clonePath;
+function resolveLinkedFolder(clonePath, folder) {
+    const rulesDir = folder ? path.join(clonePath, folder) : clonePath;
     if (!fs.existsSync(rulesDir) || !fs.statSync(rulesDir).isDirectory()) {
-        console.error(`[Error] Rules directory not found in repo: ${rulesSourceDir || "(root)"}`);
+        console.error(`[Error] Rules directory not found in repo: ${folder || "(root)"}`);
         process.exit(1);
     }
     return rulesDir;
@@ -57,13 +57,13 @@ function resolveRulesDirectory(clonePath, rulesSourceDir) {
  * Clone or update remote repository and return local rules directory.
  * Private repositories require user git credentials (SSH key or token).
  * @param {string} projectRoot
- * @param {{ rulesSource: string, branch?: string, rulesSourceDir?: string }} config
+ * @param {{ repoUrl: string, branch?: string, folder?: string }} config
  * @returns {string}
  */
-function getRulesDirFromRepo(projectRoot, config) {
-    const repoUrl = config.rulesSource;
+function getLinkedRulesDir(projectRoot, config) {
+    const repoUrl = config.repoUrl;
     const branch = config.branch || DEFAULT_BRANCH;
-    const rulesSourceDir = config.rulesSourceDir || "";
+    const folder = config.folder || "";
 
     const cacheBase = path.join(projectRoot, CACHE_DIR_NAME);
     const repoName = sanitizeRepoName(repoUrl);
@@ -72,26 +72,26 @@ function getRulesDirFromRepo(projectRoot, config) {
     if (!fs.existsSync(clonePath)) {
         fs.mkdirSync(cacheBase, { recursive: true });
         try {
-            cloneRulesRepo(projectRoot, clonePath, branch, repoUrl);
+            cloneLinkedRepo(projectRoot, clonePath, branch, repoUrl);
         } catch {
             console.error("[Error] Failed to clone rules repository.");
             console.error("  For private repos, ensure you have access (SSH key or HTTPS token).");
-            console.error("  Example: heymark init https://github.com/org/repo.git");
+            console.error("  Example: heymark link https://github.com/org/repo.git");
             process.exit(1);
         }
     } else {
         try {
-            updateRulesRepo(clonePath, branch);
+            updateLinkedRepo(clonePath, branch);
         } catch {
             // Continue with cached clone when fetch or pull fails.
         }
     }
 
-    return resolveRulesDirectory(clonePath, rulesSourceDir);
+    return resolveLinkedFolder(clonePath, folder);
 }
 
 module.exports = {
     CACHE_DIR_NAME,
-    getRulesDirFromRepo,
+    getLinkedRulesDir,
     sanitizeRepoName,
 };

@@ -1,54 +1,59 @@
 # Heymark
 
-Heymark is a tool that manages Skill documentation for AI coding tools in a single location and automatically converts it into each tool format.  
-A Markdown source written once can be reused across multiple agent tools.
+For the Korean version, see [README.ko.md](README.ko.md).
+
+Heymark is a hub system that converts and syncs one Skill repository into multiple AI Tool formats.
 
 1. [Overview](#overview)
 2. [Features](#features)
-3. [Supported Agent Tools](#supported-agent-tools)
-4. [Tech Stack](#tech-stack)
-5. [Heymark Usage](#heymark-usage)
-6. [Heymark Development](#heymark-development)
+3. [Supported Tools](#supported-tools)
+4. [How to Use](#how-to-use)
+5. [How to Dev](#how-to-dev)
 
 ## Overview
 
-Managing Skill files separately for each AI tool leads to fragmented documentation and higher maintenance costs.  
-Heymark follows the Single Source of Truth principle and converts one Markdown source into multiple tool formats.  
-A Skill written once can be used immediately in Cursor, Claude Code, GitHub Copilot, OpenAI Codex, and Antigravity.
+AI Tools support loading context-aware Skills to reduce repetitive instruction typing.
+This helps standardize common tasks and keeps team workflows consistent.
+However, each project still needs separate Skill linking and management, and each AI Tool requires a
+different Skill file format, so the same content is often maintained multiple times.
+Heymark automates format conversion and sync around a single Skill repository (Single Source of Truth),
+reducing repetitive operational work and maximizing AI workflow efficiency.
 
 ## Features
 
-- Single source management: Manage Skills for multiple AI tools with one Markdown file
-- Automatic format conversion: Convert into each tool's native format (YAML frontmatter, AGENTS.md, etc.)
-- Selective conversion: Convert only the tools you need
-- NPM package distribution: Run with `npx` without installation
-- Plugin structure: Extend supported tools by adding conversion modules
+- Single source management: Manage Markdown-based Skills in one place
+- Automatic format conversion: Generate Skill outputs in each tool's required format
+- Selective sync: Sync all tools or only selected tools
+- Instant sample usage: Start immediately with `npx heymark link --samples` without preparing a Skill repo
 
-## Supported Agent Tools
+## Supported Tools
 
-| Tool        | Output Format                            | Key Features                                             |
-| :---------- | :--------------------------------------- | :------------------------------------------------------- |
-| Cursor      | `.cursor/rules/*.mdc`                    | YAML frontmatter (`description`, `globs`, `alwaysApply`) |
-| Claude Code | `.claude/skills/*/SKILL.md`              | Skill directory structure + YAML frontmatter             |
-| Copilot     | `.github/instructions/*.instructions.md` | Multi-pattern mapping via `applyTo`                      |
-| Codex       | `.agents/skills/*/SKILL.md`              | Skill directory structure + YAML frontmatter             |
-| Antigravity | `.agent/skills/*/SKILL.md`               | Skill directory structure + YAML frontmatter             |
+| Tool           | Output Format                            |
+| :------------- | :--------------------------------------- |
+| Cursor         | `.cursor/rules/*.mdc`                    |
+| Claude Code    | `.claude/skills/*/SKILL.md`              |
+| GitHub Copilot | `.github/instructions/*.instructions.md` |
+| OpenAI Codex   | `.agents/skills/*/SKILL.md`              |
+| Antigravity    | `.agent/skills/*/SKILL.md`               |
 
-## Tech Stack
+## How to Use
 
-- Runtime: Node.js
-- Language: JavaScript
-- Core: File system API, YAML frontmatter parsing
+### Prepare Skill Repository
 
-## Heymark Usage
+You can organize your Skill repository like this:
 
-### 1. Prepare the Skill Markdown Archive Repository
+```text
+my-skills-repository/
+  ai-behavior.md
+  code-conventions.md
+  api-skills.md
+```
 
-Create Markdown files in a Skill source directory (external or personal GitHub repository) and define metadata with YAML frontmatter.
+Each Skill Markdown file should include frontmatter:
 
 ```markdown
 ---
-description: "AI assistant behavior guidelines"
+description: "AI coding behavior guidelines"
 globs: "**/*.ts,**/*.tsx"
 alwaysApply: true
 ---
@@ -58,113 +63,55 @@ alwaysApply: true
 Skill content...
 ```
 
-You can keep the repository structure simple, as shown below.
-
-```text
-my-skills-repository/
-  ai-behavior.md
-  code-conventions.md
-  api-skills.md
-```
-
-Skill sources are read from a remote GitHub repository (Public/Private).
-
-### 2. Initial Setup
-
-For first-time use, configure the Skill source repository once.
+### Quick Start
 
 ```bash
-# Configure Skill source (.heymark/config.json will be created)
-npx heymark init <GitHub-Repository-URL>
+npx heymark link --samples # quickly link sample Skills
+npx heymark sync .
 ```
 
+### Commands
+
 ```bash
-# HTTPS (for private repositories, Git credentials/token setup is required)
-npx heymark init https://github.com/org/my-rules.git
+npx heymark link --samples # quickly link sample Skills
 
-# SSH (recommended for private repositories)
-npx heymark init git@github.com:org/my-rules.git
+npx heymark link <GitHub-Repository-URL> # link a Skill repository
+npx heymark link <GitHub-Repository-URL> --folder <folder-name> # when using a subfolder
+npx heymark link <GitHub-Repository-URL> --branch <branch-name> # when using another branch
 
-# When .md files are in a subdirectory of the repository
-npx heymark init https://github.com/org/my-rules.git --dir rules --branch main
+npx heymark sync . # sync all tools
+npx heymark sync cursor claude # sync selected tools
+
+npx heymark clean . # clean all generated outputs
+npx heymark clean cursor claude # clean selected tool outputs
+
+npx heymark status # check status (same as running npx heymark)
+npx heymark help # show command help
 ```
 
-### 3. Run
+## How to Dev
 
-You can run it directly with `npx` without installation.  
-Skills are fetched from an external GitHub repository, and Markdown files in that repository are converted into each AI tool format and generated in the current project.
+### Tech Stack
 
-```bash
-# Fetch from the external Skill repository configured in .heymark/config.json and convert to all tool formats
-# (delete previously generated files and recreate them)
-npx heymark
+- Runtime: Node.js
+- Language: JavaScript
+- Core: File system API, YAML frontmatter parsing
 
-# Use a different external repository for this run only (ignore .heymark/config.json)
-npx heymark --source https://github.com/org/other-rules.git
+### Local Development
 
-# Convert only specific tools
-npx heymark -t cursor,claude
+Replace `npx heymark` in the `How to Use` section with `node scripts/cli.js` for local runs.
 
-# Preview (check conversion result without creating files)
-npx heymark --preview
-
-# Delete tool-specific files generated previously
-npx heymark --clean
-
-# CLI help
-npx heymark --help
-```
-
-## Heymark Development
-
-### 1. Local Execution
+### Release
 
 ```bash
-# Configure Skill source (first-time only, GitHub repository URL)
-node scripts/sync.js init https://github.com/org/my-rules.git
-
-# Convert to all tool formats
-node scripts/sync.js
-
-# Use a different repository for this run only
-node scripts/sync.js --source https://github.com/org/other-rules.git
-
-# Convert only specific tools
-node scripts/sync.js -t cursor,claude
-
-# Preview (check without creating files)
-node scripts/sync.js --preview
-
-# Delete generated files
-node scripts/sync.js --clean
-```
-
-### 2. Release
-
-```bash
-# NPM login
 npm login
-# Username: your-npm-username
-# Email: your-email@example.com
-
-# 1. Test after updating Skills
-node scripts/sync.js --preview
-
-# 2. Update version (Git tag is created automatically)
 npm version patch  # or minor, major
-
-# 3. Push to GitHub
-git push --follow-tags  # push commits and tags together
-
-# 4. Publish to NPM
+git push --follow-tags
 npm publish
 ```
 
-### 3. Versioning
+### Versioning
 
 - `patch` (1.0.0 -> 1.0.1): Bug fixes, typo fixes
 - `minor` (1.0.0 -> 1.1.0): New Skills, feature improvements
 - `major` (1.0.0 -> 2.0.0): Breaking changes
-- The `npm version` command automatically creates a Git tag.
-- `git push --follow-tags` pushes normal commits and tags together. (Recommended)
-- Alternatively, you can run `git push && git push --tags` to push commits first and then push all tags separately.
