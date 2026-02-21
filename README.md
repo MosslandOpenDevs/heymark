@@ -26,13 +26,13 @@ A Skill written once can be used immediately in Cursor, Claude Code, GitHub Copi
 
 ## Supported Agent Tools
 
-| Tool           | Output Format                            | Key Features                                             |
-| :------------- | :--------------------------------------- | :------------------------------------------------------- |
-| Cursor         | `.cursor/rules/*.mdc`                    | YAML frontmatter (`description`, `globs`, `alwaysApply`) |
-| Claude Code    | `.claude/skills/*/SKILL.md`              | Skill directory structure + YAML frontmatter             |
-| GitHub Copilot | `.github/instructions/*.instructions.md` | Multi-pattern mapping via `applyTo`                      |
-| OpenAI Codex   | `.agents/skills/*/SKILL.md`              | Skill directory structure + YAML frontmatter             |
-| Antigravity    | `.agent/skills/*/SKILL.md`               | Skill directory structure + YAML frontmatter             |
+| Tool        | Output Format                            | Key Features                                             |
+| :---------- | :--------------------------------------- | :------------------------------------------------------- |
+| Cursor      | `.cursor/rules/*.mdc`                    | YAML frontmatter (`description`, `globs`, `alwaysApply`) |
+| Claude Code | `.claude/skills/*/SKILL.md`              | Skill directory structure + YAML frontmatter             |
+| Copilot     | `.github/instructions/*.instructions.md` | Multi-pattern mapping via `applyTo`                      |
+| Codex       | `.agents/skills/*/SKILL.md`              | Skill directory structure + YAML frontmatter             |
+| Antigravity | `.agent/skills/*/SKILL.md`               | Skill directory structure + YAML frontmatter             |
 
 ## Tech Stack
 
