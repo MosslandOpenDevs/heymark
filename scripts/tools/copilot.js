@@ -50,16 +50,12 @@ module.exports = {
     },
 
     clean(ruleNames, projectRoot) {
-        const cleaned = [];
-
-        for (const ruleName of ruleNames) {
-            const filePath = getInstructionPath(projectRoot, ruleName);
-            if (fs.existsSync(filePath)) {
-                fs.unlinkSync(filePath);
-                cleaned.push(path.join(INSTRUCTIONS_DIR, `${ruleName}${FILE_SUFFIX}`));
-            }
+        const instructionsDirPath = path.join(projectRoot, INSTRUCTIONS_DIR);
+        if (!fs.existsSync(instructionsDirPath)) {
+            return [];
         }
 
-        return cleaned;
+        fs.rmSync(instructionsDirPath, { recursive: true, force: true });
+        return [INSTRUCTIONS_DIR];
     },
 };

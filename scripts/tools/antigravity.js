@@ -38,16 +38,12 @@ module.exports = {
     },
 
     clean(ruleNames, projectRoot) {
-        const cleaned = [];
-
-        for (const ruleName of ruleNames) {
-            const skillDir = getSkillDir(projectRoot, ruleName);
-            if (fs.existsSync(skillDir)) {
-                fs.rmSync(skillDir, { recursive: true });
-                cleaned.push(path.join(SKILLS_DIR, ruleName));
-            }
+        const skillsDirPath = path.join(projectRoot, SKILLS_DIR);
+        if (!fs.existsSync(skillsDirPath)) {
+            return [];
         }
 
-        return cleaned;
+        fs.rmSync(skillsDirPath, { recursive: true, force: true });
+        return [SKILLS_DIR];
     },
 };
