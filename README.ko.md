@@ -26,17 +26,17 @@ _프롬프트 문맥에 맞는 Skill을 자동 로드하는 모습입니다._
 - 단일 소스 관리: Markdown 기반 Skill을 한 곳에서 관리
 - 자동 형식 변환: 도구별 형식으로 Skill 자동 생성
 - 선택 동기화: 전체 또는 특정 도구만 동기화
-- 샘플 Skill 즉시 사용: Skill 저장소 준비 없이 `npx heymark link --samples`로 바로 시작
+- 샘플 Skill 즉시 사용: heymark 샘플 Skill 저장소로 바로 시작
 
 ## Supported Tools
 
-| Tool           | Output Format                            |
-| :------------- | :--------------------------------------- |
-| Cursor         | `.cursor/rules/*.mdc`                    |
-| Claude Code    | `.claude/skills/*/SKILL.md`              |
-| GitHub Copilot | `.github/instructions/*.instructions.md` |
-| OpenAI Codex   | `.agents/skills/*/SKILL.md`              |
-| Antigravity    | `.agent/skills/*/SKILL.md`               |
+| Tool        | CLI usage     | Output Format                            |
+| :---------- | :------------ | :--------------------------------------- |
+| Cursor      | `cursor`      | `.cursor/rules/*.mdc`                    |
+| Claude Code | `claude-code` | `.claude/skills/*/SKILL.md`              |
+| Copilot     | `copilot`     | `.github/instructions/*.instructions.md` |
+| Codex       | `codex`       | `.agents/skills/*/SKILL.md`              |
+| Antigravity | `antigravity` | `.agent/skills/*/SKILL.md`               |
 
 ## How to Use
 
@@ -68,7 +68,7 @@ Skill content...
 ### Quick Start
 
 ```bash
-npx heymark link --samples # 샘플 Skill 바로 연결
+npx heymark link https://github.com/MosslandOpenDevs/heymark.git --folder skill-samples
 npx heymark sync .
 ```
 
@@ -79,20 +79,17 @@ _`link`와 `sync` 실행 후, 각 도구가 요구하는 디렉터리에 Skill �
 ### Commands
 
 ```bash
-npx heymark link --samples # 샘플 Skill 바로 연결
+npx heymark link <GitHub-저장소-URL>
+npx heymark link <GitHub-저장소-URL> --folder <folder-name>  # 하위 폴더 사용 시
+npx heymark link <GitHub-저장소-URL> --branch <branch-name>  # 다른 브랜치 사용 시
 
-npx heymark link <GitHub-저장소-URL> # Skill 저장소 연결
-npx heymark link <GitHub-저장소-URL> --folder <folder-name> # 하위 폴더 사용 시
-npx heymark link <GitHub-저장소-URL> --branch <branch-name> # 다른 브랜치 사용 시
+npx heymark sync .                        # 전체 동기화
+npx heymark sync cursor claude-code       # 일부 도구만 동기화
 
-npx heymark sync . # 전체 동기화
-npx heymark sync cursor claude # 일부 도구만 동기화
+npx heymark clean .                       # 전체 정리
+npx heymark clean cursor claude-code      # 일부 도구만 정리
 
-npx heymark clean . # 전체 정리
-npx heymark clean cursor claude # 일부 도구만 정리
-
-npx heymark status # 상태 확인 (status 생략 가능)
-npx heymark help # 명령어 확인
+npx heymark help
 ```
 
 ## How to Dev
@@ -105,7 +102,7 @@ npx heymark help # 명령어 확인
 
 ### Local Development
 
-`How to Use` 섹션의 `npx heymark`를 `node scripts/cli.js`로 바꿔 실행하면 됩니다.
+`How to Use` 섹션의 `npx heymark`를 `node src/index.js`로 바꿔 실행하면 됩니다.
 
 ### Release
 

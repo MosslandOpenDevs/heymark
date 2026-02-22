@@ -28,17 +28,17 @@ _This shows Skills being automatically loaded based on prompt context._
 - Single source management: Manage Markdown-based Skills in one place
 - Automatic format conversion: Generate Skill outputs in each tool's required format
 - Selective sync: Sync all tools or only selected tools
-- Instant sample usage: Start immediately with `npx heymark link --samples` without preparing a Skill repo
+- Sample skills: Try instantly with the heymark sample skill repo
 
 ## Supported Tools
 
-| Tool           | Output Format                            |
-| :------------- | :--------------------------------------- |
-| Cursor         | `.cursor/rules/*.mdc`                    |
-| Claude Code    | `.claude/skills/*/SKILL.md`              |
-| GitHub Copilot | `.github/instructions/*.instructions.md` |
-| OpenAI Codex   | `.agents/skills/*/SKILL.md`              |
-| Antigravity    | `.agent/skills/*/SKILL.md`               |
+| Tool        | CLI usage     | Output Format                            |
+| :---------- | :------------ | :--------------------------------------- |
+| Cursor      | `cursor`      | `.cursor/rules/*.mdc`                    |
+| Claude Code | `claude-code` | `.claude/skills/*/SKILL.md`              |
+| Copilot     | `copilot`     | `.github/instructions/*.instructions.md` |
+| Codex       | `codex`       | `.agents/skills/*/SKILL.md`              |
+| Antigravity | `antigravity` | `.agent/skills/*/SKILL.md`               |
 
 ## How to Use
 
@@ -70,7 +70,7 @@ Skill content...
 ### Quick Start
 
 ```bash
-npx heymark link --samples # quickly link sample Skills
+npx heymark link https://github.com/MosslandOpenDevs/heymark.git --folder skill-samples
 npx heymark sync .
 ```
 
@@ -81,20 +81,17 @@ _After `link` and `sync`, Skill files are generated in each tool's expected dire
 ### Commands
 
 ```bash
-npx heymark link --samples # quickly link sample Skills
+npx heymark link <GitHub-Repository-URL>
+npx heymark link <GitHub-Repository-URL> --folder <folder-name>
+npx heymark link <GitHub-Repository-URL> --branch <branch-name>
 
-npx heymark link <GitHub-Repository-URL> # link a Skill repository
-npx heymark link <GitHub-Repository-URL> --folder <folder-name> # when using a subfolder
-npx heymark link <GitHub-Repository-URL> --branch <branch-name> # when using another branch
+npx heymark sync .                        # sync all tools
+npx heymark sync cursor claude-code       # sync selected tools
 
-npx heymark sync . # sync all tools
-npx heymark sync cursor claude # sync selected tools
+npx heymark clean .                       # clean all generated outputs
+npx heymark clean cursor claude-code      # clean selected tool outputs
 
-npx heymark clean . # clean all generated outputs
-npx heymark clean cursor claude # clean selected tool outputs
-
-npx heymark status # check status (same as running npx heymark)
-npx heymark help # show command help
+npx heymark help
 ```
 
 ## How to Dev
@@ -107,7 +104,7 @@ npx heymark help # show command help
 
 ### Local Development
 
-Replace `npx heymark` in the `How to Use` section with `node scripts/cli.js` for local runs.
+Replace `npx heymark` in the `How to Use` section with `node src/index.js` for local runs.
 
 ### Release
 

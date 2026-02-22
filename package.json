@@ -3,8 +3,8 @@
     "version": "2.0.0",
     "description": "Rules & Skills Hub for AI Coding Assistants",
     "type": "commonjs",
-    "main": "scripts/cli.js",
-    "bin": "scripts/cli.js",
+    "main": "src/index.js",
+    "bin": "src/index.js",
     "keywords": [
         "ai-coding-assistant",
         "ai-agent",
@@ -44,7 +44,7 @@
         "node": ">=14.0.0"
     },
     "files": [
-        "scripts/"
+        "src/"
     ],
     "repository": {
         "type": "git",
