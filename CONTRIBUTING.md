@@ -8,13 +8,12 @@
 
 ## Branch Strategy
 
-| Branch      | Purpose                   |
-| ----------- | ------------------------- |
-| `main`      | Stable release branch     |
-| `dev`       | Active development branch |
-| `feature/*` | New features              |
-| `fix/*`     | Bug fixes                 |
-| `docs/*`    | Documentation updates     |
+| Branch      | Purpose               |
+| ----------- | --------------------- |
+| `main`      | Stable release branch |
+| `feature/*` | New features          |
+| `fix/*`     | Bug fixes             |
+| `docs/*`    | Documentation updates |
 
 ## Commit Convention
 
