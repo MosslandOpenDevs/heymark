@@ -1,6 +1,6 @@
 {
     "name": "heymark",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "Rules & Skills Hub for AI Coding Assistants",
     "type": "commonjs",
     "main": "src/index.js",
