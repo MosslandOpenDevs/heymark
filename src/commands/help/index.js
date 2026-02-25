@@ -15,8 +15,11 @@ Usage:
   heymark link <repo-url>
   heymark sync .
   heymark sync <tool1> <tool2> ...
+  heymark sync . --dry-run
   heymark clean .
   heymark clean <tool1> <tool2> ...
+  heymark clean . --dry-run
+  heymark validate
 
 Link flags:
     --branch | -b

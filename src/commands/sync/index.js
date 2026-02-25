@@ -4,10 +4,23 @@ const { readCache } = require("@/skill-repo/cache-folder");
 const { readConfig } = require("@/skill-repo/config-file");
 const { SKILL_REPO_DEFAULT_BRANCH } = require("@/skill-repo/constants");
 
+function extractDryRun(flags) {
+    const dryRunFlags = new Set(["--dry-run", "-n"]);
+    const dryRun = flags.some((flag) => dryRunFlags.has(flag));
+    const positional = flags.filter((flag) => !dryRunFlags.has(flag));
+    return { dryRun, positional };
+}
+
 function runSync(flags, context) {
-    const selectedTools = selectTools(flags, context.tools);
+    const { dryRun, positional } = extractDryRun(flags);
+    const selectedTools = selectTools(positional, context.tools);
     const { skills } = readCache(context.cwd);
     const config = readConfig(context.cwd);
+
+    const previousDryRun = process.env.HEYMARK_DRY_RUN;
+    if (dryRun) {
+        process.env.HEYMARK_DRY_RUN = "1";
+    }
 
     console.log("[Sync]");
     if (config) {
@@ -16,6 +29,10 @@ function runSync(flags, context) {
         if (config.branch !== SKILL_REPO_DEFAULT_BRANCH) console.log(`  branch: ${config.branch}`);
     }
     console.log("");
+
+    if (dryRun) {
+        console.log("  mode:   dry-run (no files will be written or removed)");
+    }
 
     const skillNames = skills.map((s) => s.name);
     cleaner(context.tools, selectedTools, skillNames, context.cwd);
@@ -26,8 +43,13 @@ function runSync(flags, context) {
         console.log(`  ${tool.name.padEnd(16)} -> ${tool.output} (${count} skills)`);
     }
 
+    if (dryRun) {
+        if (previousDryRun === undefined) delete process.env.HEYMARK_DRY_RUN;
+        else process.env.HEYMARK_DRY_RUN = previousDryRun;
+    }
+
     console.log("");
-    console.log(`[Done] ${selectedTools.length} tools synced.`);
+    console.log(`[Done] ${selectedTools.length} tools synced${dryRun ? " (dry-run)" : ""}.`);
 }
 
 module.exports = {

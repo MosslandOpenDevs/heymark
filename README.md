@@ -87,9 +87,13 @@ npx heymark link <GitHub-Repository-URL> --branch <branch-name>
 
 npx heymark sync .                        # sync all tools
 npx heymark sync cursor claude-code       # sync selected tools
+npx heymark sync . --dry-run              # preview sync without writing files
 
 npx heymark clean .                       # clean all generated outputs
 npx heymark clean cursor claude-code      # clean selected tool outputs
+npx heymark clean . --dry-run             # preview clean without removing files
+
+npx heymark validate                      # validate skill frontmatter and naming
 
 npx heymark help
 ```

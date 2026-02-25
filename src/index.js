@@ -2,11 +2,12 @@
 
 require("./alias.js");
 
-const { COMMAND_LINK, COMMAND_SYNC, COMMAND_CLEAN, COMMAND_HELP } = require("@/commands/constants");
+const { COMMAND_LINK, COMMAND_SYNC, COMMAND_CLEAN, COMMAND_HELP, COMMAND_VALIDATE } = require("@/commands/constants");
 const { runLink } = require("@/commands/link");
 const { runSync } = require("@/commands/sync");
 const { runClean } = require("@/commands/clean");
 const { runHelp } = require("@/commands/help");
+const { runValidate } = require("@/commands/validate");
 const { loadTools } = require("@/tools/loader");
 
 function main() {
@@ -42,6 +43,11 @@ function main() {
 
     if (command === COMMAND_HELP) {
         runHelp(flags, context);
+        return;
+    }
+
+    if (command === COMMAND_VALIDATE) {
+        runValidate(flags, context);
         return;
     }
 
