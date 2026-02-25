@@ -6,7 +6,7 @@ function runValidate(flags, context) {
         process.exit(1);
     }
 
-    const { skills } = readCache(context.cwd);
+    const { skills } = readCache(context.cwd, { update: false });
     const errors = [];
     const seenNames = new Set();
 

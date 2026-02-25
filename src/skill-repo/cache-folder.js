@@ -57,8 +57,28 @@ function writeCache(cwd) {
     return { config, cloneFolderPath };
 }
 
-function readCache(cwd) {
-    const { config, cloneFolderPath } = writeCache(cwd);
+function readCache(cwd, options = {}) {
+    const update = options.update !== false;
+    let config, cloneFolderPath;
+
+    if (update) {
+        const result = writeCache(cwd);
+        config = result.config;
+        cloneFolderPath = result.cloneFolderPath;
+    } else {
+        config = readConfig(cwd);
+        if (!config) {
+            console.error(
+                `[Error] Not linked. Run: heymark link <repo-url> (config: ${HEYMARK.DIR}/${HEYMARK.CONFIG_FILE})`
+            );
+            process.exit(1);
+        }
+        cloneFolderPath = getCloneFolderPath(cwd, config.repoUrl);
+        if (!fs.existsSync(cloneFolderPath) || !fs.statSync(cloneFolderPath).isDirectory()) {
+            console.error("[Error] Cache not found. Run: heymark sync");
+            process.exit(1);
+        }
+    }
 
     const folder = config.folder || "";
     const skillsFolderPath = folder ? path.join(cloneFolderPath, folder) : cloneFolderPath;

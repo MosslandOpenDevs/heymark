@@ -12,7 +12,7 @@ function extractDryRun(flags) {
 function runClean(flags, context) {
     const { dryRun, positional } = extractDryRun(flags);
     const selectedTools = selectTools(positional, context.tools);
-    const { skills } = readCache(context.cwd);
+    const { skills } = readCache(context.cwd, { update: false });
 
     const previousDryRun = process.env.HEYMARK_DRY_RUN;
     if (dryRun) {
