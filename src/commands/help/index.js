@@ -25,6 +25,9 @@ Link flags:
     --branch | -b
     --folder | -f
 
+Dry-run (sync, clean):
+    --dry-run | -n
+
 Supported tools:
 ${toolLines}
 
