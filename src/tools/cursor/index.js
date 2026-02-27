@@ -1,5 +1,5 @@
 const { CURSOR } = require("@/tools/constants");
-const { generate, clean } = require("@/tools/skill-per-file");
+const { generate, preview, clean } = require("@/tools/skill-per-file");
 
 function getFileName(skill) {
     return `${skill.name}${CURSOR.FILE_SUFFIX}`;
@@ -30,6 +30,17 @@ module.exports = {
             skills,
             getFileName,
             createContent,
+        });
+    },
+
+    preview(skills, cwd) {
+        return preview({
+            cwd,
+            dir: CURSOR.SKILLS_DIR,
+            skills,
+            getFileName,
+            createContent,
+            fileSuffix: CURSOR.FILE_SUFFIX,
         });
     },
 

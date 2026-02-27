@@ -1,5 +1,5 @@
 const { COPILOT } = require("@/tools/constants");
-const { generate, clean } = require("@/tools/skill-per-file");
+const { generate, preview, clean } = require("@/tools/skill-per-file");
 
 function getFileName(skill) {
     return `${skill.name}${COPILOT.FILE_SUFFIX}`;
@@ -31,6 +31,17 @@ module.exports = {
             skills,
             getFileName,
             createContent,
+        });
+    },
+
+    preview(skills, cwd) {
+        return preview({
+            cwd,
+            dir: COPILOT.INSTRUCTIONS_DIR,
+            skills,
+            getFileName,
+            createContent,
+            fileSuffix: COPILOT.FILE_SUFFIX,
         });
     },
 

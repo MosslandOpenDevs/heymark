@@ -94,6 +94,36 @@ npx heymark clean cursor claude-code      # clean selected tool outputs
 npx heymark help
 ```
 
+### Dry-run Output Example
+
+```text
+$ npx heymark sync cursor codex --dry-run
+[Sync]
+  repo:   https://github.com/MosslandOpenDevs/heymark.git
+
+  mode:   dry-run (no files will be written or removed)
+[Clean]
+  Removed: .cursor/rules
+  Removed: .agents/skills
+
+  Cursor           -> .cursor/rules/*.mdc (7 skills)
+  Codex            -> .agents/skills/*/SKILL.md (7 skills)
+
+[Dry-run Summary]
+  Cursor           create:  1 update:  2 delete:  1
+    + .cursor/rules/new-skill.mdc
+    ~ .cursor/rules/code-conventions.mdc
+    ~ .cursor/rules/readme-writing.mdc
+    - .cursor/rules/legacy-skill.mdc
+  Codex            create:  2 update:  0 delete:  1
+    + .agents/skills/new-skill/SKILL.md
+    + .agents/skills/ai-behavior/SKILL.md
+    - .agents/skills/legacy-skill/SKILL.md
+  TOTAL            create:  3 update:  2 delete:  2
+
+[Done] 2 tools synced (dry-run).
+```
+
 ## How to Dev
 
 ### Tech Stack

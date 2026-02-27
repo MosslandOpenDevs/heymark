@@ -1,5 +1,5 @@
 const { CLAUDE_CODE } = require("@/tools/constants");
-const { generate, clean } = require("@/tools/skill-per-folder");
+const { generate, preview, clean } = require("@/tools/skill-per-folder");
 
 function createContent(skill) {
     const frontmatterLines = [
@@ -19,6 +19,16 @@ module.exports = {
 
     generate(skills, cwd) {
         return generate({
+            cwd,
+            dir: CLAUDE_CODE.SKILLS_DIR,
+            fileName: CLAUDE_CODE.SKILL_FILE_NAME,
+            skills,
+            createContent,
+        });
+    },
+
+    preview(skills, cwd) {
+        return preview({
             cwd,
             dir: CLAUDE_CODE.SKILLS_DIR,
             fileName: CLAUDE_CODE.SKILL_FILE_NAME,
