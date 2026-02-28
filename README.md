@@ -94,8 +94,33 @@ npx heymark clean cursor claude-code      # clean selected tool outputs
 npx heymark clean . --dry-run             # preview clean without removing files
 
 npx heymark validate                      # validate skill frontmatter and naming
+npx heymark validate --json               # machine-readable validation output
 
 npx heymark help
+```
+
+### Validate JSON output
+
+Use `validate --json` when you need structured output for CI or automation:
+
+```bash
+npx heymark validate --json
+```
+
+Example output:
+
+```json
+{
+  "valid": false,
+  "skillCount": 2,
+  "errors": [
+    {
+      "tool": "skill-repo",
+      "path": "my-skill.md",
+      "error": "Missing required frontmatter key: description"
+    }
+  ]
+}
 ```
 
 ## How to Dev

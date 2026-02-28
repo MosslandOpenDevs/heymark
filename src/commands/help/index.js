@@ -20,6 +20,7 @@ Usage:
   heymark clean <tool1> <tool2> ...
   heymark clean . --dry-run
   heymark validate
+  heymark validate --json
 
 Link flags:
     --branch | -b
@@ -27,6 +28,9 @@ Link flags:
 
 Dry-run (sync, clean):
     --dry-run | -n
+
+Validate flags:
+    --json
 
 Supported tools:
 ${toolLines}
