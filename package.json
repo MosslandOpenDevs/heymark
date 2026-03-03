@@ -15,7 +15,8 @@
         "claude-code",
         "copilot",
         "codex",
-        "antigravity"
+        "antigravity",
+        "openclaw"
     ],
     "homepage": "https://github.com/MosslandOpenDevs/heymark#readme",
     "bugs": {
