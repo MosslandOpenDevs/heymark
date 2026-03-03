@@ -39,6 +39,7 @@ _This shows Skills being automatically loaded based on prompt context._
 | Copilot     | `copilot`     | `.github/instructions/*.instructions.md` |
 | Codex       | `codex`       | `.agents/skills/*/SKILL.md`              |
 | Antigravity | `antigravity` | `.agent/skills/*/SKILL.md`               |
+| OpenClaw    | `openclaw`    | `~/.openclaw/skills/*/SKILL.md`          |
 
 ## How to Use
 

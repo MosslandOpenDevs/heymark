@@ -41,4 +41,12 @@ const CURSOR = {
     OUTPUT_PATTERN: ".cursor/rules/*.mdc",
 };
 
-module.exports = { ANTIGRAVITY, CLAUDE_CODE, CODEX, COPILOT, CURSOR };
+const OPENCLAW = {
+    KEY: "openclaw",
+    NAME: "OpenClaw",
+    SKILLS_DIR: path.join(".openclaw", "skills"),
+    SKILL_FILE_NAME: "SKILL.md",
+    OUTPUT_PATTERN: "~/.openclaw/skills/*/SKILL.md",
+};
+
+module.exports = { ANTIGRAVITY, CLAUDE_CODE, CODEX, COPILOT, CURSOR, OPENCLAW };

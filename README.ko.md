@@ -37,6 +37,7 @@ _프롬프트 문맥에 맞는 Skill을 자동 로드하는 모습입니다._
 | Copilot     | `copilot`     | `.github/instructions/*.instructions.md` |
 | Codex       | `codex`       | `.agents/skills/*/SKILL.md`              |
 | Antigravity | `antigravity` | `.agent/skills/*/SKILL.md`               |
+| OpenClaw    | `openclaw`    | `~/.openclaw/skills/*/SKILL.md`          |
 
 ## How to Use
 
