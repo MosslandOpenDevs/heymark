@@ -3,9 +3,9 @@ const path = require("path");
 const ANTIGRAVITY = {
     KEY: "antigravity",
     NAME: "Antigravity",
-    SKILLS_DIR: path.join(".agent", "skills"),
+    SKILLS_DIR: path.join(".agents", "skills"),
     SKILL_FILE_NAME: "SKILL.md",
-    OUTPUT_PATTERN: ".agent/skills/*/SKILL.md",
+    OUTPUT_PATTERN: ".agents/skills/*/SKILL.md",
 };
 
 const CLAUDE_CODE = {

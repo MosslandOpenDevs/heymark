@@ -1,15 +1,16 @@
 const { CURSOR } = require("@/tools/constants");
 const { generate, clean } = require("@/tools/skill-per-file");
+const { yamlQuote } = require("@/tools/yaml");
 
 function getFileName(skill) {
     return `${skill.name}${CURSOR.FILE_SUFFIX}`;
 }
 
 function createContent(skill) {
-    const frontmatterLines = ["---", `description: "${skill.description}"`];
+    const frontmatterLines = ["---", `description: ${yamlQuote(skill.description)}`];
 
     if (skill.globs) {
-        frontmatterLines.push(`globs: "${skill.globs}"`);
+        frontmatterLines.push(`globs: ${yamlQuote(skill.globs)}`);
     }
 
     frontmatterLines.push(`alwaysApply: ${skill.alwaysApply}`);

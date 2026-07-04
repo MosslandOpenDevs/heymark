@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const { execSync } = require("child_process");
+const { execFileSync } = require("child_process");
 const { HEYMARK, SKILL_REPO_DEFAULT_BRANCH } = require("@/skill-repo/constants");
 const { readConfig } = require("@/skill-repo/config-file");
 const { readSkillFiles } = require("@/skill-repo/skill-file-parser");
@@ -12,17 +12,16 @@ function getCloneFolderPath(cwd, repoUrl) {
 }
 
 function gitClone(cwd, dir, branch, repoUrl) {
-    execSync(`git clone --depth 1 --branch "${branch}" "${repoUrl}" "${dir}"`, {
+    execFileSync("git", ["clone", "--depth", "1", "--branch", branch, repoUrl, dir], {
         stdio: "inherit",
         cwd,
     });
 }
 
 function gitPull(dir, branch) {
-    execSync(`git fetch origin && git checkout --quiet . && git pull --quiet origin "${branch}"`, {
-        stdio: "pipe",
-        cwd: dir,
-    });
+    execFileSync("git", ["fetch", "origin"], { stdio: "pipe", cwd: dir });
+    execFileSync("git", ["checkout", "--quiet", "."], { stdio: "pipe", cwd: dir });
+    execFileSync("git", ["pull", "--quiet", "origin", branch], { stdio: "pipe", cwd: dir });
 }
 
 function writeCache(cwd) {
@@ -62,6 +61,14 @@ function readCache(cwd) {
 
     const folder = config.folder || "";
     const skillsFolderPath = folder ? path.join(cloneFolderPath, folder) : cloneFolderPath;
+
+    const resolvedClone = path.resolve(cloneFolderPath);
+    const resolvedSkills = path.resolve(skillsFolderPath);
+    if (resolvedSkills !== resolvedClone && !resolvedSkills.startsWith(resolvedClone + path.sep)) {
+        console.error(`[Error] Folder escapes the cloned repo: ${folder}`);
+        process.exit(1);
+    }
+
     if (!fs.existsSync(skillsFolderPath) || !fs.statSync(skillsFolderPath).isDirectory()) {
         console.error(`[Error] Folder not found in repo: ${folder || "(root)"}`);
         process.exit(1);

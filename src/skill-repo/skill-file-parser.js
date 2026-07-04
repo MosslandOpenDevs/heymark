@@ -35,15 +35,27 @@ function parseFrontmatter(content) {
     return { metadata, body: body.trim() };
 }
 
+function assertSafeSkillName(name, fileName) {
+    if (name !== path.basename(name) || name === "." || name === "..") {
+        console.error(
+            `[Error] Invalid skill name "${name}" in ${fileName}: must not contain path separators or "..".`
+        );
+        process.exit(1);
+    }
+}
+
 function readSkillFile(skillsDir, fileName) {
     const filePath = path.join(skillsDir, fileName);
     const raw = fs.readFileSync(filePath, "utf8");
     const { metadata, body } = parseFrontmatter(raw);
     const baseName = path.basename(fileName, SKILL_FILE_EXTENSION);
 
+    const name = typeof metadata.name === "string" && metadata.name ? metadata.name : baseName;
+    assertSafeSkillName(name, fileName);
+
     return {
         fileName,
-        name: typeof metadata.name === "string" && metadata.name ? metadata.name : baseName,
+        name,
         description:
             typeof metadata.description === "string" && metadata.description
                 ? metadata.description

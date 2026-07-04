@@ -1,5 +1,7 @@
 # Heymark
 
+> **상태 — 아카이브됨 (2026-07).** Heymark는 더 이상 활발히 개발되지 않으며, 참고용 구현으로 보존됩니다. 종료(wind-down) 배경, 2026년 중반 생태계 분석, 마지막 패치 내역, 알려진 한계는 [ARCHIVE.md](ARCHIVE.md)를 참고하세요.
+
 Heymark는 하나의 Skill 저장소를 여러 AI Tool 형식으로 변환하고 동기화하는 허브 시스템입니다.
 
 1. [Overview](#overview)
@@ -36,7 +38,7 @@ _프롬프트 문맥에 맞는 Skill을 자동 로드하는 모습입니다._
 | Claude Code | `claude-code` | `.claude/skills/*/SKILL.md`              |
 | Copilot     | `copilot`     | `.github/instructions/*.instructions.md` |
 | Codex       | `codex`       | `.agents/skills/*/SKILL.md`              |
-| Antigravity | `antigravity` | `.agent/skills/*/SKILL.md`               |
+| Antigravity | `antigravity` | `.agents/skills/*/SKILL.md`              |
 | OpenClaw    | `openclaw`    | `~/.openclaw/skills/*/SKILL.md`          |
 
 ## How to Use
@@ -99,7 +101,7 @@ npx heymark help
 
 - Runtime: Node.js
 - Language: JavaScript
-- Core: File system API, YAML frontmatter parsing
+- Core: File system API, 자체 Markdown frontmatter 파서 (단순 `key: value` 스칼라만 지원, 완전한 YAML 아님)
 
 ### Local Development
 

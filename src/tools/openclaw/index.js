@@ -2,12 +2,13 @@ const fs = require("fs");
 const path = require("path");
 const os = require("os");
 const { OPENCLAW } = require("@/tools/constants");
+const { yamlQuote } = require("@/tools/yaml");
 
 function createContent(skill) {
     const frontmatterLines = [
         "---",
-        `name: ${skill.name}`,
-        `description: "${skill.description}"`,
+        `name: ${yamlQuote(skill.name)}`,
+        `description: ${yamlQuote(skill.description)}`,
         "---",
     ];
 

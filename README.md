@@ -2,6 +2,8 @@
 
 For the Korean version, see [README.ko.md](README.ko.md).
 
+> **Status — Archived (2026-07).** Heymark is no longer actively developed and is kept as a reference implementation. See [ARCHIVE.md](ARCHIVE.md) for the wind-down rationale, the mid-2026 landscape analysis, what was fixed in the final pass, and known limitations.
+
 Heymark is a hub system that converts and syncs one Skill repository into multiple AI Tool formats.
 
 1. [Overview](#overview)
@@ -38,7 +40,7 @@ _This shows Skills being automatically loaded based on prompt context._
 | Claude Code | `claude-code` | `.claude/skills/*/SKILL.md`              |
 | Copilot     | `copilot`     | `.github/instructions/*.instructions.md` |
 | Codex       | `codex`       | `.agents/skills/*/SKILL.md`              |
-| Antigravity | `antigravity` | `.agent/skills/*/SKILL.md`               |
+| Antigravity | `antigravity` | `.agents/skills/*/SKILL.md`              |
 | OpenClaw    | `openclaw`    | `~/.openclaw/skills/*/SKILL.md`          |
 
 ## How to Use
@@ -101,7 +103,7 @@ npx heymark help
 
 - Runtime: Node.js
 - Language: JavaScript
-- Core: File system API, YAML frontmatter parsing
+- Core: File system API, custom Markdown frontmatter parser (simple `key: value` scalars; not full YAML)
 
 ### Local Development
 
