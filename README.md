@@ -11,6 +11,7 @@ Heymark is a hub system that converts and syncs one Skill repository into multip
 3. [Supported Tools](#supported-tools)
 4. [How to Use](#how-to-use)
 5. [How to Dev](#how-to-dev)
+6. [Future Directions](#future-directions)
 
 ## Overview
 
@@ -123,3 +124,23 @@ npm publish
 - `patch` (1.0.0 -> 1.0.1): Bug fixes, typo fixes
 - `minor` (1.0.0 -> 1.1.0): New Skills, feature improvements
 - `major` (1.0.0 -> 2.0.0): Breaking changes
+
+## Future Directions
+
+The v2.1.1 pass made the reference implementation correct, but not relevant — the premise still needs a new wedge. If you pick this up, the first thing to get right is what _not_ to do: **stop competing on tool-count.** That axis is already owned — `rulesync` (40+ tools) and `Ruler` (~31) — and with `SKILL.md` and `AGENTS.md` now open standards, a seventh or eighth target buys almost nothing.
+
+That leaves two genuinely different directions. They are a fork, not a roadmap — pick one.
+
+- **A — Standards-first converter.** Adopt `AGENTS.md` + portable `SKILL.md` as the baseline and translate _only_ the true outliers — Cursor `.mdc`, Copilot `.instructions.md`, plus path re-rooting. Cheap to prototype; low ceiling.
+- **B — Distribution / governance.** Lean into `link <repo>`: one team publishes a governed skill repo, every project and tool pulls from it — with versioning, provenance, and drift detection. Bigger surface, unproven demand.
+
+A is format work; B is workflow work. They don't compose cleanly.
+
+Either way the prerequisites are the same. The tool-plugin contract (`src/tools/<name>/index.js`) makes targets cheap to add or drop, so start there, in order:
+
+1. Restore tests + CI — `CONTRIBUTING.md` mandates them, and every v2.1.1 bug was deterministic.
+2. Add an `AGENTS.md` target — the standard baseline Heymark still lacks.
+3. Write a real YAML frontmatter parser (the current one handles only single-line `key: value`).
+4. Make OpenClaw consistent with the other targets; optionally restore `status` / `validate` / `--json`.
+
+The single-source-of-truth instinct was right. Whether the winning shape is a tiny translator or a distribution layer is the open question — and an open invitation. See [ARCHIVE.md](ARCHIVE.md) §5 for the full landscape and the honest case for why neither may be worth it.
