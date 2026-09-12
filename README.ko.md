@@ -1,5 +1,10 @@
 # Heymark
 
+<!-- opendevs-badges:start -->
+[![Lifecycle: Archive](https://img.shields.io/badge/Lifecycle-Archive-6b7280?style=flat)](ARCHIVE.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-64748b?style=flat)](LICENSE)
+<!-- opendevs-badges:end -->
+
 > **상태 — 아카이브됨 (2026-07).** Heymark는 더 이상 활발히 개발되지 않으며, 참고용 구현으로 보존됩니다. 종료(wind-down) 배경, 2026년 중반 생태계 분석, 마지막 패치 내역, 알려진 한계는 [ARCHIVE.md](ARCHIVE.md)를 참고하세요.
 
 Heymark는 하나의 Skill 저장소를 여러 AI Tool 형식으로 변환하고 동기화하는 허브 시스템입니다.

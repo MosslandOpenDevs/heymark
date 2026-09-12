@@ -1,5 +1,10 @@
 # Heymark
 
+<!-- opendevs-badges:start -->
+[![Lifecycle: Archive](https://img.shields.io/badge/Lifecycle-Archive-6b7280?style=flat)](ARCHIVE.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-64748b?style=flat)](LICENSE)
+<!-- opendevs-badges:end -->
+
 For the Korean version, see [README.ko.md](README.ko.md).
 
 > **Status — Archived (2026-07).** Heymark is no longer actively developed and is kept as a reference implementation. See [ARCHIVE.md](ARCHIVE.md) for the wind-down rationale, the mid-2026 landscape analysis, what was fixed in the final pass, and known limitations.
